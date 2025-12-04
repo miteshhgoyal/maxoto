@@ -32,23 +32,30 @@ import {
   Phone,
   Mail,
   Globe,
+  Wrench,
+  Truck,
+  Clock,
+  BadgeCheck,
+  LineChart,
+  BarChart3,
+  Sparkle,
 } from "lucide-react";
 
 // ============================================
-// MAXOTO LUXURY BRANDING
+// MAXOTO PREMIUM BRANDING
 // ============================================
 const BRANDING = {
   productName: "MAXOTO",
   tagline: "Engineering Excellence",
   subtagline: "Precision Performance for the Discerning Driver",
-  
+
   links: {
     products: "https://maxoto.com/products/",
     contact: "https://maxoto.com/contact",
     powercontrol: "https://maxoto.com/products/powercontrol",
     pedalbox: "https://maxoto.com/products/pedalbox",
   },
-  
+
   stats: {
     vehicles: "4,000+",
     powerIncrease: "30%",
@@ -56,42 +63,46 @@ const BRANDING = {
     countries: "25+",
     warranty: "Comprehensive",
     installation: "5-10 Minutes",
+    satisfaction: "99.8%",
+    experience: "20+ Years",
   },
 };
 
 const MaxotoLuxuryPage = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const [activeProduct, setActiveProduct] = useState(0);
-  const [isVisible, setIsVisible] = useState({});
   const scrollContainerRef = useRef(null);
 
-  // Intersection Observer for animations
+  // Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('animate-in');
+            entry.target.classList.add("animate-in");
           }
         });
       },
       { threshold: 0.1 }
     );
 
-    document.querySelectorAll('[data-animate]').forEach((el) => {
+    document.querySelectorAll("[data-animate]").forEach((el) => {
       observer.observe(el);
     });
 
     return () => observer.disconnect();
   }, []);
 
-  // Smooth scroll testimonials
+  // Smooth testimonials scroll
   useEffect(() => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
     const scroll = () => {
-      if (container.scrollLeft >= container.scrollWidth - container.clientWidth) {
+      if (
+        container.scrollLeft >=
+        container.scrollWidth - container.clientWidth
+      ) {
         container.scrollLeft = 0;
       } else {
         container.scrollLeft += 0.5;
@@ -102,37 +113,50 @@ const MaxotoLuxuryPage = () => {
     return () => clearInterval(intervalId);
   }, []);
 
-  // ============================================
-  // PRODUCTS DATA
-  // ============================================
+  // PRODUCTS
   const products = [
     {
       id: "powercontrol",
       name: "PowerControl",
       tagline: "Optimal Performance Enhancement",
       subtitle: "Engineered for Maximum Efficiency",
-      description: "Experience unprecedented power delivery with our advanced engine management system. Seamlessly integrating with your vehicle's ECU, PowerControl optimizes fuel injection and boost pressure for up to 30% gains in both horsepower and torque.",
+      description:
+        "PowerControl sits between the ECU and engine sensors, applying a calibrated strategy to fuel, boost, and torque requests. The result is stronger in-gear acceleration and a broader, more usable power band without compromising drivability.",
       icon: Bolt,
-      accentColor: "from-amber-200 via-amber-400 to-amber-600",
-      glowColor: "amber-500",
+      accentColor: "from-[#e2b27a] via-[#d39b63] to-[#b77b44]",
       stats: [
-        { label: "Power Gain", value: "+30%", icon: Flame, color: "text-amber-400" },
-        { label: "Torque Gain", value: "+30%", icon: Rocket, color: "text-amber-400" },
-        { label: "Compatibility", value: "4,000+", icon: Trophy, color: "text-amber-400" },
+        {
+          label: "Power Gain",
+          value: "+30%",
+          icon: Flame,
+          color: "text-[#e2b27a]",
+        },
+        {
+          label: "Torque Gain",
+          value: "+30%",
+          icon: Rocket,
+          color: "text-[#e2b27a]",
+        },
+        {
+          label: "Compatibility",
+          value: "4,000+",
+          icon: Trophy,
+          color: "text-[#e2b27a]",
+        },
       ],
       features: [
-        "Certified for 4,000+ vehicle models worldwide",
-        "Comprehensive warranty with Engine Protect+",
-        "Plug & Play installation in 15-20 minutes",
-        "Optimized fuel efficiency and power delivery",
-        "Real-time performance monitoring",
-        "Reversible to factory settings anytime",
+        "Vehicle-specific maps for thousands of engines",
+        "Engine Protect+ monitors key parameters in real time",
+        "No permanent changes to the ECU flash",
+        "Optimized for daily driving, touring, and towing",
+        "Dyno-developed calibrations with road validation",
+        "Fully reversible with OEM-style connectors",
       ],
       example: "Audi A3 (8V) 1.6 TDI 110 HP",
       technicalHighlights: [
-        "Advanced ECU optimization",
-        "Dynamic boost management",
-        "Real-time adaptation",
+        "Multi-channel sensor interfacing",
+        "High-speed microcontroller platform",
+        "Thermal and voltage protection layers",
       ],
     },
     {
@@ -140,69 +164,119 @@ const MaxotoLuxuryPage = () => {
       name: "PedalBox",
       tagline: "Electronic Throttle Mastery",
       subtitle: "Precision Control at Your Fingertips",
-      description: "Transform your driving experience with instantaneous throttle response. PedalBox eliminates lag between pedal input and engine reaction, delivering sport-tuned acceleration across 30+ customizable settings.",
+      description:
+        "PedalBox refines how your vehicle reacts to pedal input, removing dead travel and lag. Modes ensure that city traffic, open highway cruising, and dynamic back-road driving each feel tailored and precise.",
       icon: Gauge,
-      accentColor: "from-cyan-200 via-cyan-400 to-cyan-600",
-      glowColor: "cyan-500",
+      accentColor: "from-[#f0d7ac] via-[#d9b786] to-[#b28651]",
       stats: [
-        { label: "Response", value: "+25%", icon: Zap, color: "text-cyan-400" },
-        { label: "Settings", value: "30+", icon: Settings, color: "text-cyan-400" },
-        { label: "Install", value: "5-10min", icon: Timer, color: "text-cyan-400" },
+        {
+          label: "Response",
+          value: "+25%",
+          icon: Zap,
+          color: "text-[#f0d7ac]",
+        },
+        {
+          label: "Settings",
+          value: "30+",
+          icon: Settings,
+          color: "text-[#f0d7ac]",
+        },
+        {
+          label: "Install",
+          value: "5-10min",
+          icon: Timer,
+          color: "text-[#f0d7ac]",
+        },
       ],
       features: [
-        "Universal compatibility with all vehicle models",
-        "Instant throttle response enhancement",
-        "30+ preset performance profiles",
-        "3-step plug & play installation",
-        "Sport, City, and Eco driving modes",
-        "Completely reversible system",
+        "Profiles for Comfort, City, Sport, and Track use",
+        "Fine adjustment inside each main mode",
+        "Memory function retains last setting at key-on",
+        "Compact handset with discreet mounting options",
+        "Optimised for both ICE and selected EV platforms",
+        "Zero impact on factory safety systems",
       ],
       example: "Toyota Land Cruiser 4.2 TD",
       technicalHighlights: [
-        "Electronic throttle optimization",
-        "Multi-mode programming",
-        "Adaptive response curves",
+        "High-resolution throttle signal processing",
+        "Mode-specific response curves",
+        "Fail-safe bypass logic",
       ],
     },
   ];
 
-  // ============================================
   // WHY MAXOTO
-  // ============================================
   const whyMaxoto = [
     {
       icon: Layers,
       title: "Umbrella of Innovation",
-      description: "A singular vision encompassing multiple verticals—from performance enhancement to cutting-edge diagnostics. One brand, infinite possibilities.",
-      color: "from-violet-400 to-purple-600",
+      description:
+        "MAXOTO unites performance upgrades, diagnostics, and data services under a single, coherent engineering vision for modern vehicles.",
+      color: "from-[#f0d7ac] to-[#c89a5b]",
       stat: "Multiple Verticals",
     },
     {
       icon: Award,
       title: "Exclusive Partnerships",
-      description: "Proud to feature DTE Systems Germany—pioneers in automotive electronics. More prestigious collaborations on the horizon.",
-      color: "from-amber-400 to-orange-600",
+      description:
+        "Development is anchored by long-term partnerships with European electronics specialists, including DTE Systems Germany.",
+      color: "from-[#e2b27a] to-[#b77b44]",
       stat: "DTE Germany",
     },
     {
       icon: Cpu,
       title: "Future-Ready Technology",
-      description: "Supporting ICE, Hybrid, and EV ecosystems with adaptive solutions that evolve with automotive innovation.",
-      color: "from-cyan-400 to-blue-600",
+      description:
+        "Hardware and firmware stacks are designed for over-the-air updatability and compatibility with ICE, hybrid, and EV architectures.",
+      color: "from-[#f5e3c8] to-[#c89a5b]",
       stat: "All Powertrains",
     },
   ];
 
-  // ============================================
+  // JOURNEY
+  const processSteps = [
+    {
+      number: "01",
+      icon: Target,
+      title: "Configure Your Vehicle",
+      description:
+        "Enter brand, model, year, and engine code to see compatible hardware, indicative gains, and available packages.",
+      color: "from-[#e2b27a] to-[#c2894b]",
+    },
+    {
+      number: "02",
+      icon: Package,
+      title: "Curated Package Creation",
+      description:
+        "Our configurator suggests the right combination of PowerControl, PedalBox, and accessories for your use case.",
+      color: "from-[#f0d7ac] to-[#c89a5b]",
+    },
+    {
+      number: "03",
+      icon: Wrench,
+      title: "Installation & Setup",
+      description:
+        "Choose between certified partner installation or guided self-install with step-by-step visuals and video support.",
+      color: "from-[#dec5a0] to-[#b17b44]",
+    },
+    {
+      number: "04",
+      icon: Sparkles,
+      title: "Calibration & Fine-Tuning",
+      description:
+        "Tailor modes, sensitivity, and profiles to your preferences, and store multiple driver presets.",
+      color: "from-[#f5e3c8] to-[#c89a5b]",
+    },
+  ];
+
   // TESTIMONIALS
-  // ============================================
   const testimonials = [
     {
       name: "Marcus Reynolds",
       role: "Automotive Enthusiast",
       location: "Munich, Germany",
       avatar: "https://i.pravatar.cc/150?img=12",
-      text: "The precision engineering is immediately evident. PowerControl transformed my Audi's performance while maintaining the refinement I expect from a premium vehicle. Exceptional product.",
+      text: "PowerControl transformed mid-range response while leaving the car’s refinement untouched. It feels like a higher-output factory tune rather than an add-on.",
       rating: 5,
       vehicle: "Audi RS6 Avant",
       verified: true,
@@ -212,7 +286,7 @@ const MaxotoLuxuryPage = () => {
       role: "Executive",
       location: "Singapore",
       avatar: "https://i.pravatar.cc/150?img=45",
-      text: "PedalBox delivers exactly what it promises—instantaneous throttle response with customizable profiles. The build quality and installation process reflect true German engineering standards.",
+      text: "The ability to switch PedalBox modes depending on traffic and weather makes the car feel tailored to each day.",
       rating: 5,
       vehicle: "Porsche Cayenne Turbo",
       verified: true,
@@ -222,7 +296,7 @@ const MaxotoLuxuryPage = () => {
       role: "Performance Driver",
       location: "London, UK",
       avatar: "https://i.pravatar.cc/150?img=33",
-      text: "I've tested numerous performance modules. MAXOTO stands apart—not just in power gains, but in how seamlessly it integrates. The Engine Protect+ feature provides genuine peace of mind.",
+      text: "On track days I use more aggressive maps, and for commuting I return to a calmer profile. That flexibility is the real win.",
       rating: 5,
       vehicle: "BMW M4 Competition",
       verified: true,
@@ -232,7 +306,7 @@ const MaxotoLuxuryPage = () => {
       role: "Luxury Car Owner",
       location: "Milan, Italy",
       avatar: "https://i.pravatar.cc/150?img=26",
-      text: "Sophistication meets performance. The installation was effortless, and the results exceeded expectations. MAXOTO has earned its place in the luxury performance market.",
+      text: "Install was neat and reversible, and the interior remains visually untouched—exactly what I wanted.",
       rating: 5,
       vehicle: "Mercedes-AMG GT",
       verified: true,
@@ -242,75 +316,175 @@ const MaxotoLuxuryPage = () => {
       role: "Tech Entrepreneur",
       location: "Seoul, South Korea",
       avatar: "https://i.pravatar.cc/150?img=51",
-      text: "As someone who values both innovation and reliability, MAXOTO delivers on both fronts. The technology is sophisticated yet user-friendly. Highly recommended.",
+      text: "The combination of clear documentation, hardware quality, and support made the upgrade feel like dealing with an OEM supplier.",
       rating: 5,
       vehicle: "Tesla Model S Plaid",
       verified: true,
     },
   ];
 
-  // ============================================
   // FAQ
-  // ============================================
   const faqs = [
     {
-      question: "How does MAXOTO maintain warranty compliance?",
-      answer: "All MAXOTO products are engineered with stringent safety parameters and certified for over 4,000 vehicle models. Our systems operate within manufacturer-approved tolerances and include comprehensive product warranties. PowerControl features Engine Protect+ for additional safeguarding.",
+      question: "How does MAXOTO handle manufacturer warranty concerns?",
+      answer:
+        "Modules operate within engine safety margins and can be removed without trace, leaving no permanent changes in the ECU flash. Documentation for service centers is included in every kit.",
     },
     {
-      question: "What level of technical expertise is required for installation?",
-      answer: "Both PowerControl and PedalBox feature sophisticated plug-and-play architecture. PowerControl installs in 15-20 minutes, while PedalBox requires just 5-10 minutes with our guided 3-step process. No specialized tools or technical training necessary.",
+      question: "Is coding or laptop-based programming required?",
+      answer:
+        "No specialist tools are required. All firmware and mapping is pre-loaded, and installation is fully plug-and-play through OEM-style connectors.",
     },
     {
-      question: "Which vehicles are compatible with MAXOTO products?",
-      answer: "PowerControl is certified for 4,000+ vehicles including gasoline and turbo diesel engines. PedalBox offers universal compatibility with all electronic throttle systems. Visit our compatibility tool on the product pages for specific model verification.",
+      question: "Which brands do you support?",
+      answer:
+        "Coverage includes leading European, Japanese, Korean, American, and Indian brands, across petrol, diesel, hybrid, and selected EV platforms.",
     },
     {
-      question: "What performance improvements should I expect?",
-      answer: "PowerControl delivers up to 30% increases in both horsepower and torque, varying by vehicle platform and configuration. PedalBox enhances throttle response by approximately 25%, with 30+ customizable settings to match your driving preferences.",
+      question: "Will fuel consumption increase?",
+      answer:
+        "In equivalent driving conditions, many customers report similar or slightly improved consumption because the engine can operate more efficiently at lower throttle openings.",
     },
     {
-      question: "Are these systems safe for long-term use?",
-      answer: "Absolutely. Developed by DTE Systems Germany with decades of automotive electronics expertise, our products undergo rigorous testing. PowerControl's Engine Protect+ actively monitors vital parameters, while both systems are completely reversible to factory specifications.",
+      question: "Can I revert to stock behaviour?",
+      answer:
+        "Yes. Removing the module restores stock response. PedalBox can be disabled from its handset, and PowerControl can be unplugged and bridged with the original connectors.",
     },
     {
-      question: "Can I adjust performance characteristics after installation?",
-      answer: "PedalBox offers 30+ preset configurations with up to 21 distinct power levels, allowing real-time adjustment via intuitive controls. PowerControl is optimized for maximum safe performance but can be reset to stock parameters at any time.",
+      question: "Is MAXOTO legal in my market?",
+      answer:
+        "Local regulations differ. MAXOTO modules are designed as auxiliary devices, and customers are advised to follow regional legislation and inspection requirements.",
     },
     {
-      question: "Do MAXOTO products support electric and hybrid vehicles?",
-      answer: "Yes. MAXOTO provides future-ready solutions spanning ICE (Internal Combustion Engine), Hybrid, and full EV platforms. Check specific product compatibility for your vehicle's powertrain configuration.",
+      question: "Can one module be moved between vehicles?",
+      answer:
+        "In many cases, harness swaps or re-coding allow reuse on another compatible platform. Our team can advise based on VIN and engine codes.",
     },
     {
-      question: "What warranty coverage is included?",
-      answer: "All MAXOTO products include comprehensive warranty coverage. Specific terms vary by product line and region. Our customer service team provides detailed warranty documentation and support throughout your ownership experience.",
+      question: "Do you offer fleet or business solutions?",
+      answer:
+        "Yes. Dedicated account managers work with fleet operators, tuners, and dealerships to design scalable upgrade programs.",
     },
   ];
 
-  // CTA Button Component
-  const CTAButton = ({ 
-    href, 
-    children, 
-    className = "", 
-    size = "default", 
-    variant = "primary" 
+  // SERVICE BENEFITS
+  const serviceBenefits = [
+    {
+      icon: Shield,
+      title: "Lifetime Support",
+      description:
+        "Direct access to technical specialists familiar with your exact platform.",
+      color: "text-[#e2b27a]",
+    },
+    {
+      icon: Truck,
+      title: "Global Shipping",
+      description:
+        "Secure, tracked logistics with packaging designed to protect electronics.",
+      color: "text-[#f0d7ac]",
+    },
+    {
+      icon: BadgeCheck,
+      title: "Certified Quality",
+      description:
+        "ISO-aligned assembly and testing for every production batch.",
+      color: "text-[#f5e3c8]",
+    },
+    {
+      icon: Clock,
+      title: "Rapid Installation",
+      description:
+        "Typical installs completed inside a single service appointment.",
+      color: "text-[#e2b27a]",
+    },
+  ];
+
+  // OWNERSHIP HIGHLIGHTS
+  const ownershipHighlights = [
+    {
+      icon: Activity,
+      label: "Dynamic Driving",
+      value:
+        "Balanced calibrations that keep everyday refinement while adding urgency when requested.",
+    },
+    {
+      icon: LineChart,
+      label: "Measured Gains",
+      value:
+        "Independent dyno figures demonstrate repeatable improvements across torque bands.",
+    },
+    {
+      icon: Users,
+      label: "Community",
+      value:
+        "Owner meets, technical deep-dives, and test days hosted with partner facilities.",
+    },
+    {
+      icon: Globe,
+      label: "Global Presence",
+      value: `${BRANDING.stats.countries} active markets through distributors and installers.`,
+    },
+  ];
+
+  // TECH STACK
+  const techStack = [
+    {
+      icon: CircuitBoard,
+      title: "Automotive-Grade Hardware",
+      text: "PCBs, housings, and connectors designed for vibration, heat, and moisture in engine bays and cabins.",
+    },
+    {
+      icon: Cpu,
+      title: "Real-Time Processing",
+      text: "High-speed microcontrollers process sensor data and pedal inputs within milliseconds.",
+    },
+    {
+      icon: Activity,
+      title: "Safety Layers",
+      text: "Redundant monitoring, watchdog logic, and conservative default maps protect critical systems.",
+    },
+    {
+      icon: BarChart3,
+      title: "Data-Led Development",
+      text: "Dyno sessions, telemetry logs, and customer feedback all feed into map refinement.",
+    },
+  ];
+
+  // NETWORK GRID
+  const networkStats = [
+    { label: "Certified Installers", value: "120+", icon: Wrench },
+    { label: "Partner Dealerships", value: "80+", icon: MapPin },
+    { label: "Test Vehicles", value: "160+", icon: Box },
+    { label: "Support Languages", value: "10+", icon: Globe },
+  ];
+
+  // CTA Button
+  const CTAButton = ({
+    href,
+    children,
+    className = "",
+    size = "default",
+    variant = "primary",
   }) => {
     const sizeClasses = {
       small: "px-5 py-2.5 text-sm",
-      default: "px-8 py-4 text-base",
-      large: "px-10 py-5 text-lg",
+      default: "px-7 py-3.5 text-base",
+      large: "px-9 py-4 text-lg",
     };
 
     const variantClasses = {
-      primary: "bg-gradient-to-r from-amber-500 via-amber-400 to-amber-500 text-slate-900 hover:from-amber-400 hover:to-amber-600 shadow-lg shadow-amber-500/30",
-      secondary: "bg-white/10 backdrop-blur-sm text-white border border-white/20 hover:bg-white/20 hover:border-white/40",
-      ghost: "bg-transparent text-amber-400 border-2 border-amber-400 hover:bg-amber-400 hover:text-slate-900",
+      primary:
+        "bg-gradient-to-r from-[#e2b27a] via-[#d3a267] to-[#b77b44] text-[#1c130e] hover:from-[#f0d7ac] hover:to-[#b77b44] shadow-lg shadow-[#b77b44]/25",
+      secondary:
+        "bg-white/5 backdrop-blur-sm text-[#f5e3c8] border border-white/15 hover:bg-white/10 hover:border-white/30",
+      ghost:
+        "bg-transparent text-[#e2b27a] border-2 border-[#e2b27a]/60 hover:bg-[#e2b27a] hover:text-[#1c130e] hover:border-[#e2b27a]",
     };
 
     return (
       <a
         href={href}
-        className={`group inline-flex items-center justify-center gap-3 ${sizeClasses[size]} ${variantClasses[variant]} font-semibold rounded-full transition-all duration-300 hover:scale-105 ${className}`}
+        className={`group inline-flex items-center justify-center gap-2.5 ${sizeClasses[size]} ${variantClasses[variant]} font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] ${className}`}
       >
         <span className="tracking-wide">{children}</span>
         <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
@@ -319,304 +493,381 @@ const MaxotoLuxuryPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white overflow-hidden">
-      {/* Luxury Background with Grid Patterns */}
+    <div className="min-h-screen bg-[#080606] text-white overflow-hidden">
+      {/* Global SVG background patterns */}
       <div className="fixed inset-0 z-0">
-        {/* Primary Hexagon Grid Pattern */}
+        {/* Fine cross grid */}
         <div
-          className="absolute inset-0 opacity-[0.015]"
+          className="absolute inset-0 opacity-[0.03]"
           style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='87' viewBox='0 0 100 87' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 0l25 14.5v29L25 58 0 43.5v-29L25 0zm50 0l25 14.5v29L75 58l-25-14.5v-29L50 0z' fill='none' stroke='%23f59e0b' stroke-width='0.5'/%3E%3C/svg%3E")`,
-            backgroundSize: '100px 87px',
-          }}
-        />
-
-        {/* Secondary Fine Grid */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `
-              linear-gradient(rgba(251, 191, 36, 0.3) 0.5px, transparent 0.5px),
-              linear-gradient(90deg, rgba(251, 191, 36, 0.3) 0.5px, transparent 0.5px)
-            `,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23a67c52' stroke-width='0.4'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/svg%3E")`,
             backgroundSize: "60px 60px",
           }}
         />
-
-        {/* Diagonal Lines Pattern */}
+        {/* Diagonal weave */}
         <div
-          className="absolute inset-0 opacity-[0.01]"
+          className="absolute inset-0 opacity-[0.018]"
           style={{
-            backgroundImage: `repeating-linear-gradient(
-              45deg,
-              transparent,
-              transparent 50px,
-              rgba(251, 191, 36, 0.2) 50px,
-              rgba(251, 191, 36, 0.2) 51px
-            )`,
+            backgroundImage:
+              "repeating-linear-gradient(135deg, rgba(200,154,91,0.22) 0px, rgba(200,154,91,0.22) 1px, transparent 1px, transparent 10px)",
           }}
         />
-
-        {/* Dot Grid Pattern */}
-        <div 
-          className="absolute inset-0 opacity-[0.025]"
-          style={{
-            backgroundImage: `radial-gradient(circle at 1px 1px, rgba(251, 191, 36, 0.4) 1px, transparent 0)`,
-            backgroundSize: '50px 50px',
-          }}
-        />
-
-        {/* Carbon Fiber Texture Simulation */}
+        {/* Hex mesh */}
         <div
-          className="absolute inset-0 opacity-[0.008]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage: `
-              repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(251, 191, 36, 0.1) 2px, rgba(251, 191, 36, 0.1) 4px),
-              repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(251, 191, 36, 0.1) 2px, rgba(251, 191, 36, 0.1) 4px)
-            `,
-            backgroundSize: '40px 40px',
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='90' height='78' viewBox='0 0 90 78' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 2l22 12v24L22 50 0 38V14L22 2zm46 0l22 12v24L68 50 46 38V14L68 2z' fill='none' stroke='%237f5a3a' stroke-width='0.5'/%3E%3C/svg%3E")`,
+            backgroundSize: "90px 78px",
           }}
         />
-
-        {/* Elegant Gradient Orbs */}
-        <div className="absolute -top-48 -left-48 w-[800px] h-[800px] bg-gradient-radial from-amber-500/15 via-amber-500/5 to-transparent rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-1/3 -right-48 w-[600px] h-[600px] bg-gradient-radial from-cyan-500/10 via-cyan-500/3 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-48 left-1/4 w-[700px] h-[700px] bg-gradient-radial from-violet-500/8 via-violet-500/2 to-transparent rounded-full blur-3xl" />
-        
-        {/* Luxury Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-slate-950/50 via-transparent to-slate-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-950/30 via-transparent to-slate-950/30" />
+        {/* Dot field */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "radial-gradient(circle at 1px 1px, rgba(245,227,200,0.35) 1px, transparent 0)",
+            backgroundSize: "55px 55px",
+          }}
+        />
+        {/* Soft orbs */}
+        <div className="absolute -top-1/3 -left-1/3 w-[650px] h-[650px] bg-gradient-radial from-[#e2b27a]/20 via-[#a67c52]/5 to-transparent rounded-full blur-3xl" />
+        <div className="absolute top-1/3 -right-1/3 w-[520px] h-[520px] bg-gradient-radial from-[#f0d7ac]/18 via-[#b78a57]/6 to-transparent rounded-full blur-3xl" />
+        <div className="absolute -bottom-1/3 left-1/4 w-[580px] h-[580px] bg-gradient-radial from-[#c29a6a]/15 via-[#604534]/5 to-transparent rounded-full blur-3xl" />
+        {/* Vignette */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/50" />
       </div>
 
-      {/* Navigation */}
-      <nav className="relative z-50 border-b border-white/5 backdrop-blur-xl bg-slate-950/80">
+      {/* Offer bar */}
+      <div className="relative z-40 bg-[#d4b28a] text-[#271710] text-sm md:text-base py-2 px-4 flex flex-col md:flex-row items-center justify-center gap-1 border-b border-[#b3895c]">
+        <p className="text-center font-medium">
+          Introductory programs available for selected vehicles with full module
+          and harness warranty.
+        </p>
+        <a
+          href={BRANDING.links.products}
+          className="underline underline-offset-4 font-semibold text-[#3e2414]"
+        >
+          View Programs
+        </a>
+      </div>
+
+      {/* Nav */}
+      <nav className="relative z-50 border-b border-white/10 backdrop-blur-xl bg-black/70">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            {/* Logo with Geometric Border */}
-            <div className="flex items-center gap-3">
+          <div className="flex items-center justify-between h-16">
+            <div className="flex items-center gap-2.5">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg blur-sm opacity-50" />
-                <div className="relative w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-                  <Bolt className="w-6 h-6 text-slate-900" />
-                </div>
-                {/* Hexagon Border */}
-                <div className="absolute -inset-1 opacity-30">
-                  <svg className="w-full h-full" viewBox="0 0 100 100">
-                    <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="url(#grad1)" strokeWidth="1"/>
-                    <defs>
-                      <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:1}} />
-                        <stop offset="100%" style={{stopColor:'rgb(217, 119, 6)', stopOpacity:1}} />
-                      </linearGradient>
-                    </defs>
-                  </svg>
+                <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg blur-sm opacity-60" />
+                <div className="relative w-9 h-9 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+                  <Bolt className="w-5 h-5 text-[#1c130e]" />
                 </div>
               </div>
               <div>
-                <h1 className="text-2xl font-bold tracking-tighter text-white">MAXOTO</h1>
-                <p className="text-[10px] text-slate-400 uppercase tracking-widest">Performance Engineering</p>
+                <h1 className="text-xl font-bold tracking-tight text-white">
+                  MAXOTO
+                </h1>
+                <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.18em]">
+                  Performance Engineering
+                </p>
               </div>
             </div>
 
-            {/* Nav Links */}
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#products" className="text-sm text-slate-300 hover:text-amber-400 transition-colors font-medium">Products</a>
-              <a href="#technology" className="text-sm text-slate-300 hover:text-amber-400 transition-colors font-medium">Technology</a>
-              <a href="#testimonials" className="text-sm text-slate-300 hover:text-amber-400 transition-colors font-medium">Testimonials</a>
-              <CTAButton href={BRANDING.links.contact} size="small" variant="primary">
-                Contact Us
+            <div className="hidden md:flex items-center gap-6">
+              <a
+                href="#products"
+                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
+              >
+                Products
+              </a>
+              <a
+                href="#process"
+                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
+              >
+                Journey
+              </a>
+              <a
+                href="#tech"
+                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
+              >
+                Technology
+              </a>
+              <a
+                href="#ownership"
+                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
+              >
+                Ownership
+              </a>
+              <a
+                href="#testimonials"
+                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
+              >
+                Reviews
+              </a>
+              <CTAButton
+                href={BRANDING.links.contact}
+                size="small"
+                variant="primary"
+              >
+                Contact
               </CTAButton>
             </div>
           </div>
         </div>
       </nav>
 
-      {/* Main Content */}
+      {/* Main content wrapper */}
       <div className="relative z-10">
-        {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Hero Specific Patterns */}
-          <div className="absolute inset-0">
-            {/* Large Hexagon Grid for Hero */}
-            <div 
-              className="absolute inset-0 opacity-[0.02]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='200' height='174' viewBox='0 0 200 174' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M50 0l50 29v58l-50 29-50-29V29L50 0zm100 0l50 29v58l-50 29-50-29V29l50-29z' fill='none' stroke='%23f59e0b' stroke-width='0.8'/%3E%3C/svg%3E")`,
-                backgroundSize: '200px 174px',
-              }}
-            />
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-32 relative z-10">
-            {/* Trust Badge with Grid Border */}
-            <div className="flex justify-center mb-12" data-animate>
-              <div className="relative inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 backdrop-blur-xl border border-white/10 rounded-full">
-                {/* Corner Accents */}
-                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-amber-500/50 rounded-tl-full" />
-                <div className="absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-amber-500/50 rounded-tr-full" />
-                <div className="absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-amber-500/50 rounded-bl-full" />
-                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-amber-500/50 rounded-br-full" />
-                
-                <div className="flex -space-x-2">
+        {/* HERO */}
+        <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden">
+          {/* hero-specific stripe */}
+          <div
+            className="absolute inset-x-0 top-0 h-40 opacity-[0.12]"
+            style={{
+              backgroundImage:
+                "repeating-linear-gradient(90deg, rgba(245,227,200,0.22) 0, rgba(245,227,200,0.22) 1px, transparent 1px, transparent 16px)",
+            }}
+          />
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24 relative z-10">
+            {/* trust badge */}
+            <div className="flex justify-center mb-10" data-animate>
+              <div className="relative inline-flex items-center gap-2.5 px-4 py-2 bg-black/40 backdrop-blur-xl border border-white/12 rounded-full">
+                <div className="flex -space-x-1.5">
                   {[12, 45, 33].map((img) => (
-                    <div key={img} className="w-8 h-8 rounded-full border-2 border-slate-900 ring-1 ring-amber-500/50 overflow-hidden">
-                      <img src={`https://i.pravatar.cc/40?img=${img}`} alt="" className="w-full h-full object-cover" />
+                    <div
+                      key={img}
+                      className="w-7 h-7 rounded-full border-2 border-[#120c09] ring-1 ring-[#e2b27a]/50 overflow-hidden"
+                    >
+                      <img
+                        src={`https://i.pravatar.cc/40?img=${img}`}
+                        alt=""
+                        className="w-full h-full object-cover"
+                      />
                     </div>
                   ))}
                 </div>
-                <span className="text-sm text-slate-300 font-medium">Trusted by {BRANDING.stats.customers} drivers worldwide</span>
+                <span className="text-xs text-[#e2d4c0] font-medium">
+                  Trusted by {BRANDING.stats.customers} drivers worldwide
+                </span>
                 <div className="flex gap-0.5">
                   {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3.5 h-3.5 text-amber-400 fill-amber-400" />
+                    <Star
+                      key={i}
+                      className="w-3 h-3 text-[#e2b27a] fill-[#e2b27a]"
+                    />
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Main Headline */}
-            <div className="text-center max-w-5xl mx-auto mb-16" data-animate>
-              <div className="mb-6">
-                <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-8">
-                  Premium Performance Solutions
+            {/* headline */}
+            <div className="text-center max-w-4xl mx-auto mb-12" data-animate>
+              <div className="mb-5">
+                <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em]">
+                  Tailored Performance, Calm Luxury
                 </span>
               </div>
-              
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.1] mb-8">
-                <span className="text-white">Elevate Your</span>
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] mb-6">
+                <span className="text-white">Quietly Redefine</span>
                 <br />
                 <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">
-                    Driving Experience
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] via-[#e2b27a] to-[#b77b44]">
+                    Every Drive
                   </span>
-                  {/* Underline Accent */}
-                  <div className="absolute -bottom-2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-amber-500 to-transparent opacity-30" />
+                  <div className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e2b27a]/70 to-transparent" />
                 </span>
               </h1>
-
-              <p className="text-xl md:text-2xl text-slate-400 leading-relaxed max-w-3xl mx-auto mb-12">
-                German-engineered performance enhancement systems delivering up to <span className="text-white font-semibold">30% more power</span> with plug & play simplicity. Certified for <span className="text-white font-semibold">{BRANDING.stats.vehicles} vehicles</span>.
+              <p className="text-lg md:text-xl text-[#d1c0aa] leading-relaxed max-w-2xl mx-auto mb-9">
+                MAXOTO modules offer measurable gains and sharper response while
+                respecting the original character of your vehicle. Each
+                application is validated on-road and on dynos to feel cohesive,
+                not intrusive.
               </p>
-
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <CTAButton href={BRANDING.links.products} size="large" variant="primary">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
+                <CTAButton
+                  href={BRANDING.links.products}
+                  size="large"
+                  variant="primary"
+                >
                   Explore Products
                 </CTAButton>
-                <CTAButton href="#technology" size="large" variant="secondary">
-                  Learn More
+                <CTAButton href="#process" size="large" variant="secondary">
+                  View Ownership Journey
                 </CTAButton>
               </div>
             </div>
 
-            {/* Stats Bar with Geometric Patterns */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl mx-auto" data-animate>
+            {/* hero stats */}
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
+              data-animate
+            >
               {[
-                { icon: Flame, value: "+30%", label: "Power Increase" },
-                { icon: Trophy, value: "4,000+", label: "Compatible Vehicles" },
-                { icon: Timer, value: "5-10min", label: "Installation Time" },
-                { icon: Shield, value: "Certified", label: "Comprehensive Warranty" },
+                { icon: Flame, value: "+30%", label: "Power" },
+                { icon: Trophy, value: "4,000+", label: "Vehicles" },
+                { icon: Timer, value: "15 min", label: "Install" },
+                { icon: Shield, value: "99.8%", label: "Satisfaction" },
               ].map((stat, idx) => (
                 <div
                   key={idx}
-                  className="relative group p-6 bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-xl border border-white/5 rounded-2xl hover:border-amber-500/30 transition-all duration-300 overflow-hidden"
+                  className="relative group p-5 bg-gradient-to-br from-black/70 to-[#1a1511]/80 backdrop-blur-xl border border-white/8 rounded-xl hover:border-[#e2b27a]/40 transition-all duration-300 overflow-hidden"
                 >
-                  {/* Inner Grid Pattern */}
-                  <div 
-                    className="absolute inset-0 opacity-[0.03]"
+                  <div
+                    className="absolute inset-0 opacity-[0.07]"
                     style={{
-                      backgroundImage: `radial-gradient(circle at 2px 2px, rgba(251, 191, 36, 0.5) 1px, transparent 0)`,
-                      backgroundSize: '20px 20px',
+                      backgroundImage:
+                        "radial-gradient(circle at 0 0, rgba(226,178,122,0.35) 0, transparent 50%)",
                     }}
                   />
-                  
-                  {/* Corner Brackets */}
-                  <div className="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-amber-500/20" />
-                  <div className="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-amber-500/20" />
-                  <div className="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-amber-500/20" />
-                  <div className="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-amber-500/20" />
-                  
+                  <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t border-l border-[#e2b27a]/25" />
+                  <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r border-[#e2b27a]/25" />
                   <div className="relative z-10">
-                    <stat.icon className="w-8 h-8 text-amber-400 mb-3 group-hover:scale-110 transition-transform" />
-                    <div className="text-3xl font-bold text-white mb-1">{stat.value}</div>
-                    <div className="text-xs text-slate-400 uppercase tracking-wide font-medium">{stat.label}</div>
+                    <stat.icon className="w-7 h-7 text-[#e2b27a] mb-2 group-hover:scale-110 transition-transform" />
+                    <div className="text-2xl font-bold text-white mb-0.5">
+                      {stat.value}
+                    </div>
+                    <div className="text-xs text-[#b1997a] uppercase tracking-[0.18em] font-medium">
+                      {stat.label}
+                    </div>
                   </div>
-                  
-                  {/* Subtle corner accent */}
-                  <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-br from-amber-500/5 to-transparent rounded-br-2xl" />
                 </div>
               ))}
             </div>
+          </div>
+        </section>
 
-            {/* Scroll Indicator */}
-            <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 animate-bounce">
-              <div className="relative">
-                <ChevronDown className="w-6 h-6 text-amber-400" />
-                <div className="absolute inset-0 bg-amber-400 blur-xl opacity-30" />
+        {/* BRAND STORY / ABOUT */}
+        <section className="py-20 relative overflow-hidden">
+          <div
+            className="absolute inset-x-0 top-0 h-px"
+            style={{
+              backgroundImage:
+                "linear-gradient(to right, transparent, rgba(226,178,122,0.4), transparent)",
+            }}
+          />
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr,1fr] items-start">
+              <div data-animate>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  A Quietly Obsessive
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                    Engineering Culture
+                  </span>
+                </h2>
+                <p className="text-[#d1c0aa] text-base leading-relaxed mb-4">
+                  MAXOTO was founded by calibration engineers and test drivers
+                  who spent their early careers inside OEM development programs.
+                  The goal was simple: offer measurable performance benefits
+                  without the drama and compromises that often define the
+                  aftermarket.
+                </p>
+                <p className="text-[#d1c0aa] text-base leading-relaxed mb-4">
+                  Every module is the product of hundreds of hours of data
+                  logging, dyno work, and route validation on real roads—from
+                  high-altitude passes to dense city traffic. The result is an
+                  upgrade that integrates with how modern vehicles are actually
+                  used.
+                </p>
+                <ul className="space-y-2.5 text-sm text-[#e1d2be]">
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    Cross-functional teams spanning calibration, electronics,
+                    and vehicle dynamics.
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    Development loops that include feedback from owners, tuners,
+                    and professional drivers.
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    Documentation and support material written for both
+                    enthusiasts and workshops.
+                  </li>
+                </ul>
+              </div>
+
+              <div
+                className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 to-[#1b130f]/90 p-6 overflow-hidden"
+                data-animate
+              >
+                <div
+                  className="absolute inset-0 opacity-[0.06]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='52' fill='none' stroke='%23c89a5b' stroke-width='0.6' stroke-dasharray='4 4'/%3E%3Ccircle cx='60' cy='60' r='32' fill='none' stroke='%23f5e3c8' stroke-width='0.4' stroke-dasharray='2 6'/%3E%3Cline x1='8' y1='60' x2='112' y2='60' stroke='%23a67c52' stroke-width='0.4' stroke-dasharray='3 5'/%3E%3C/svg%3E")`,
+                    backgroundSize: "120px 120px",
+                  }}
+                />
+                <div className="relative z-10 space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-[#1c130e]" />
+                    </div>
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a]">
+                        Calibration Philosophy
+                      </p>
+                      <p className="text-sm text-[#f5e3c8] font-medium">
+                        Factory integration, aftermarket flexibility.
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm text-[#e1d2be] leading-relaxed">
+                    Rather than chasing headline dyno figures at all costs,
+                    MAXOTO focuses on sustainable, repeatable performance that
+                    feels natural in day-to-day use. The emphasis is on how the
+                    car responds through each gear, not only at maximum output.
+                  </p>
+                  <p className="text-sm text-[#e1d2be] leading-relaxed">
+                    This approach is what allows MAXOTO-equipped vehicles to
+                    retain the refinement and reliability that owners expect
+                    from modern premium platforms.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Featured Products Section */}
-        <section id="products" className="py-32 relative">
-          {/* Section Background Pattern */}
-          <div className="absolute inset-0">
-            <div 
-              className="absolute inset-0 opacity-[0.01]"
-              style={{
-                backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23f59e0b' stroke-width='0.5'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")`,
-                backgroundSize: '60px 60px',
-              }}
-            />
-          </div>
-
+        {/* PRODUCTS */}
+        <section id="products" className="py-24 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-20" data-animate>
-              <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-6">
-                Featured Products
+            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
+                Featured Modules
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
                 Precision-Engineered
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-                  Performance Solutions
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Performance Systems
                 </span>
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                Discover automotive excellence through advanced German engineering
+              <p className="text-lg text-[#d1c0aa] leading-relaxed">
+                Two distinct modules, one philosophy—refinement without drama.
               </p>
             </div>
 
-            {/* Product Selection Tabs */}
-            <div className="flex justify-center gap-4 mb-16" data-animate>
+            {/* Tabs */}
+            <div className="flex justify-center gap-3 mb-12" data-animate>
               {products.map((product, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveProduct(idx)}
-                  className={`relative flex items-center gap-3 px-8 py-4 rounded-2xl font-semibold transition-all duration-300 overflow-hidden ${
+                  className={`relative flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 overflow-hidden ${
                     activeProduct === idx
-                      ? "bg-gradient-to-r from-amber-500 to-amber-600 text-slate-900 shadow-xl shadow-amber-500/30 scale-105"
-                      : "bg-white/5 text-slate-400 border border-white/10 hover:border-amber-500/30 hover:bg-white/10"
+                      ? "bg-gradient-to-r from-[#e2b27a] to-[#b77b44] text-[#1c130e] shadow-lg shadow-[#b77b44]/35 scale-105"
+                      : "bg-white/5 text-[#d1c0aa] border border-white/10 hover:border-[#e2b27a]/40 hover:bg-white/10"
                   }`}
                 >
-                  {activeProduct === idx && (
-                    <div className="absolute inset-0 opacity-10">
-                      <div 
-                        style={{
-                          backgroundImage: `radial-gradient(circle at 2px 2px, rgba(15, 23, 42, 0.5) 1px, transparent 0)`,
-                          backgroundSize: '15px 15px',
-                        }}
-                        className="w-full h-full"
-                      />
-                    </div>
-                  )}
-                  <product.icon className="w-5 h-5 relative z-10" />
+                  <product.icon className="w-4 h-4 relative z-10" />
                   <span className="relative z-10">{product.name}</span>
                 </button>
               ))}
             </div>
 
-            {/* Active Product Display */}
+            {/* Active product */}
             {products.map((product, idx) => (
               <div
                 key={idx}
@@ -625,183 +876,111 @@ const MaxotoLuxuryPage = () => {
                 }`}
                 data-animate
               >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-                  {/* Product Visual with Advanced Patterns */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  {/* Visual */}
                   <div className="relative">
-                    {/* Glow Effect */}
-                    <div className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-10 rounded-3xl blur-3xl`} />
-                    
-                    <div className="relative p-12 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-                      {/* Top Border Accent with Geometric Pattern */}
-                      <div className="absolute top-0 left-0 w-full h-px">
-                        <div className={`w-full h-full bg-gradient-to-r ${product.accentColor}`} />
-                      </div>
-                      
-                      {/* Corner Geometric Elements */}
-                      <div className="absolute top-0 left-0 w-20 h-20">
-                        <svg className="w-full h-full opacity-20" viewBox="0 0 100 100">
-                          <polygon points="0,0 100,0 0,100" fill="url(#cornerGrad)" />
-                          <defs>
-                            <linearGradient id="cornerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0.3}} />
-                              <stop offset="100%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0}} />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-                      <div className="absolute bottom-0 right-0 w-20 h-20 rotate-180">
-                        <svg className="w-full h-full opacity-20" viewBox="0 0 100 100">
-                          <polygon points="0,0 100,0 0,100" fill="url(#cornerGrad2)" />
-                          <defs>
-                            <linearGradient id="cornerGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0.3}} />
-                              <stop offset="100%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0}} />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
-
-                      {/* Hexagon Pattern Overlay */}
-                      <div 
-                        className="absolute inset-0 opacity-[0.02]"
+                    <div
+                      className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-10 rounded-2xl blur-3xl`}
+                    />
+                    <div className="relative p-10 bg-gradient-to-br from-black/75 via-[#18120f]/85 to-black/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
+                      {/* Hex svg overlay */}
+                      <div
+                        className="absolute inset-0 opacity-[0.04]"
                         style={{
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg width='50' height='43' viewBox='0 0 50 43' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M25 0l12.5 7.25v14.5L25 29l-12.5-7.25v-14.5L25 0z' fill='none' stroke='%23f59e0b' stroke-width='0.5'/%3E%3C/svg%3E")`,
-                          backgroundSize: '50px 43px',
+                          backgroundImage: `url("data:image/svg+xml,%3Csvg width='45' height='39' viewBox='0 0 45 39' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.5 1l17 9.5v19L22.5 39l-17-9.5v-19z' fill='none' stroke='%23b78a57' stroke-width='0.6'/%3E%3C/svg%3E")`,
+                          backgroundSize: "45px 39px",
                         }}
                       />
-                      
-                      {/* Product Icon Display with Grid */}
-                      <div className="relative aspect-square bg-gradient-to-br from-slate-800 to-slate-900 rounded-2xl flex items-center justify-center mb-8 overflow-hidden group">
-                        {/* Background Grid */}
-                        <div 
-                          className="absolute inset-0 opacity-5"
-                          style={{
-                            backgroundImage: `radial-gradient(circle at 2px 2px, rgba(251, 191, 36, 0.3) 1px, transparent 0)`,
-                            backgroundSize: '30px 30px',
-                          }}
+                      <div className="relative aspect-square bg-gradient-to-br from-[#15100d] to-black rounded-xl flex items-center justify-center mb-6 overflow-hidden group">
+                        <div
+                          className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                         />
-                        
-                        <div className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
-                        <product.icon className="w-40 h-40 text-amber-400 relative z-10" />
-                        
-                        {/* Rotating Hexagon Border */}
-                        <div className="absolute inset-8 opacity-20 animate-spin-slow">
-                          <svg className="w-full h-full" viewBox="0 0 100 100">
-                            <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="url(#hexGrad)" strokeWidth="0.5" strokeDasharray="5,5"/>
-                            <defs>
-                              <linearGradient id="hexGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:1}} />
-                                <stop offset="100%" style={{stopColor:'rgb(217, 119, 6)', stopOpacity:0.3}} />
-                              </linearGradient>
-                            </defs>
-                          </svg>
-                        </div>
+                        <product.icon className="w-32 h-32 text-[#e2b27a] relative z-10" />
                       </div>
-
-                      {/* Stats Grid with Geometric Borders */}
-                      <div className="grid grid-cols-3 gap-4">
+                      <div className="grid grid-cols-3 gap-3">
                         {product.stats.map((stat, statIdx) => (
                           <div
                             key={statIdx}
-                            className="relative text-center p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl hover:border-amber-500/30 transition-all overflow-hidden group"
+                            className="relative text-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:border-[#e2b27a]/40 transition-all overflow-hidden group"
                           >
-                            {/* Inner Pattern */}
-                            <div 
-                              className="absolute inset-0 opacity-0 group-hover:opacity-[0.03] transition-opacity"
-                              style={{
-                                backgroundImage: `linear-gradient(45deg, rgba(251, 191, 36, 0.5) 25%, transparent 25%, transparent 75%, rgba(251, 191, 36, 0.5) 75%), 
-                                                 linear-gradient(45deg, rgba(251, 191, 36, 0.5) 25%, transparent 25%, transparent 75%, rgba(251, 191, 36, 0.5) 75%)`,
-                                backgroundSize: '10px 10px',
-                                backgroundPosition: '0 0, 5px 5px',
-                              }}
+                            <stat.icon
+                              className={`w-6 h-6 ${stat.color} mx-auto mb-1.5 relative z-10`}
                             />
-                            
-                            <stat.icon className={`w-7 h-7 ${stat.color} mx-auto mb-2 relative z-10`} />
-                            <div className="text-2xl font-bold text-white mb-1 relative z-10">{stat.value}</div>
-                            <div className="text-xs text-slate-400 uppercase tracking-wide font-medium relative z-10">{stat.label}</div>
-                            
-                            {/* Corner Brackets */}
-                            <div className="absolute top-1 left-1 w-2 h-2 border-t border-l border-amber-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute top-1 right-1 w-2 h-2 border-t border-r border-amber-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute bottom-1 left-1 w-2 h-2 border-b border-l border-amber-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            <div className="absolute bottom-1 right-1 w-2 h-2 border-b border-r border-amber-500/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            <div className="text-xl font-bold text-white mb-0.5 relative z-10">
+                              {stat.value}
+                            </div>
+                            <div className="text-[10px] text-[#b1997a] uppercase tracking-[0.18em] font-medium relative z-10">
+                              {stat.label}
+                            </div>
                           </div>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  {/* Product Details */}
-                  <div className="space-y-8">
-                    {/* Product Header */}
+                  {/* Details */}
+                  <div className="space-y-6">
                     <div>
-                      <div className={`inline-flex items-center gap-3 px-5 py-2.5 bg-gradient-to-r ${product.accentColor} rounded-full mb-4`}>
-                        <product.icon className="w-5 h-5 text-slate-900" />
-                        <span className="text-slate-900 font-bold text-sm uppercase tracking-wide">
+                      <div
+                        className={`inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r ${product.accentColor} rounded-full mb-3`}
+                      >
+                        <product.icon className="w-4 h-4 text-[#1c130e]" />
+                        <span className="text-[#1c130e] font-bold text-xs uppercase tracking-[0.22em]">
                           {product.name}
                         </span>
                       </div>
-                      <h3 className="text-4xl font-bold text-white mb-2">{product.tagline}</h3>
-                      <p className="text-xl text-amber-400 font-medium mb-6">{product.subtitle}</p>
-                      <p className="text-lg text-slate-300 leading-relaxed">{product.description}</p>
+                      <h3 className="text-3xl font-bold text-white mb-2">
+                        {product.tagline}
+                      </h3>
+                      <p className="text-lg text-[#f0d7ac] font-medium mb-4">
+                        {product.subtitle}
+                      </p>
+                      <p className="text-base text-[#e1d2be] leading-relaxed">
+                        {product.description}
+                      </p>
                     </div>
 
-                    {/* Example Vehicle with Pattern */}
-                    <div className="relative p-4 bg-gradient-to-r from-white/5 to-transparent border-l-4 border-amber-500 rounded-lg overflow-hidden">
-                      <div 
-                        className="absolute inset-0 opacity-[0.02]"
-                        style={{
-                          backgroundImage: `repeating-linear-gradient(45deg, rgba(251, 191, 36, 0.5) 0px, rgba(251, 191, 36, 0.5) 1px, transparent 1px, transparent 10px)`,
-                        }}
-                      />
-                      <p className="text-sm text-slate-400 mb-1 relative z-10">Example Application</p>
-                      <p className="text-white font-semibold relative z-10">{product.example}</p>
+                    <div className="relative p-3.5 bg-gradient-to-r from-white/5 to-transparent border-l-4 border-[#e2b27a] rounded-lg overflow-hidden">
+                      <p className="text-xs text-[#b1997a] mb-0.5 relative z-10">
+                        Example Application
+                      </p>
+                      <p className="text-white font-semibold text-sm relative z-10">
+                        {product.example}
+                      </p>
                     </div>
 
-                    {/* Technical Highlights */}
-                    <div className="flex flex-wrap gap-3">
+                    <div className="flex flex-wrap gap-2">
                       {product.technicalHighlights.map((highlight, hIdx) => (
                         <div
                           key={hIdx}
-                          className="relative px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm text-slate-300 font-medium overflow-hidden group"
+                          className="relative px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-[#e1d2be] font-medium overflow-hidden"
                         >
-                          <div 
-                            className="absolute inset-0 opacity-0 group-hover:opacity-[0.02] transition-opacity"
-                            style={{
-                              backgroundImage: `linear-gradient(90deg, rgba(251, 191, 36, 0.5) 0%, transparent 50%, rgba(251, 191, 36, 0.5) 100%)`,
-                            }}
-                          />
                           <span className="relative z-10">{highlight}</span>
                         </div>
                       ))}
                     </div>
 
-                    {/* Features List with Grid Pattern */}
-                    <div className="space-y-3">
+                    <div className="space-y-2.5">
                       {product.features.map((feature, fIdx) => (
                         <div
                           key={fIdx}
-                          className="relative flex items-start gap-3 p-4 bg-white/5 backdrop-blur-sm border border-white/5 rounded-xl hover:border-amber-500/30 transition-all group overflow-hidden"
+                          className="relative flex items-start gap-2.5 p-3 bg-white/4 backdrop-blur-sm border border-white/6 rounded-lg hover:border-[#e2b27a]/40 transition-all"
                         >
-                          {/* Hover Grid Pattern */}
-                          <div 
-                            className="absolute inset-0 opacity-0 group-hover:opacity-[0.02] transition-opacity"
-                            style={{
-                              backgroundImage: `radial-gradient(circle at 1px 1px, rgba(251, 191, 36, 0.5) 1px, transparent 0)`,
-                              backgroundSize: '15px 15px',
-                            }}
-                          />
-                          
-                          <div className="shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center mt-0.5 group-hover:scale-110 transition-transform relative z-10">
-                            <Check className="w-3 h-3 text-slate-900" />
+                          <div className="shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center mt-0.5">
+                            <Check className="w-3 h-3 text-[#1c130e]" />
                           </div>
-                          <span className="text-slate-300 leading-relaxed relative z-10">{feature}</span>
+                          <span className="text-[#e1d2be] leading-relaxed text-sm">
+                            {feature}
+                          </span>
                         </div>
                       ))}
                     </div>
 
-                    {/* CTA */}
-                    <CTAButton href={BRANDING.links[product.id]} size="large" variant="primary">
+                    <CTAButton
+                      href={BRANDING.links[product.id]}
+                      size="default"
+                      variant="primary"
+                    >
                       Discover {product.name}
                     </CTAButton>
                   </div>
@@ -811,293 +990,405 @@ const MaxotoLuxuryPage = () => {
           </div>
         </section>
 
-        {/* Why MAXOTO Section with Enhanced Patterns */}
-        <section id="technology" className="py-32 relative overflow-hidden">
-          {/* Complex Background Patterns */}
-          <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950" />
-          <div 
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23f59e0b' stroke-width='0.5'%3E%3Cpath d='M0 0L80 80M80 0L0 80M40 0v80M0 40h80'/%3E%3C/g%3E%3C/svg%3E")`,
-              backgroundSize: '80px 80px',
-            }}
-          />
-
+        {/* JOURNEY / PROCESS */}
+        <section id="process" className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#130e0a] to-black" />
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-20" data-animate>
-              <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-6">
-                Why Choose MAXOTO
+            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
+                Ownership Journey
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Redefining Automotive
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                From Curiosity to
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-                  Performance Standards
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Calibrated Confidence
                 </span>
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                A legacy of innovation, precision, and excellence
+              <p className="text-lg text-[#d1c0aa] leading-relaxed">
+                A short, guided path from first inquiry to your first drive.
               </p>
             </div>
 
-            {/* Feature Cards with Advanced Grid Patterns */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20" data-animate>
-              {whyMaxoto.map((feature, idx) => (
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
+              data-animate
+            >
+              {processSteps.map((step, idx) => (
                 <div
                   key={idx}
-                  className="group relative p-8 bg-gradient-to-br from-slate-900/80 to-slate-800/50 backdrop-blur-xl border border-white/10 rounded-3xl hover:border-amber-500/30 transition-all duration-500 overflow-hidden"
+                  className="group relative p-6 bg-gradient-to-br from-black/80 to-[#15100d]/90 backdrop-blur-xl border border-white/12 rounded-2xl hover:border-[#e2b27a]/45 transition-all duration-500 overflow-hidden"
                 >
-                  {/* Hexagon Pattern Background */}
-                  <div 
-                    className="absolute inset-0 opacity-[0.02] group-hover:opacity-[0.04] transition-opacity"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='35' viewBox='0 0 40 35' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0l10 5.75v11.5L20 23l-10-5.75v-11.5L20 0z' fill='none' stroke='%23f59e0b' stroke-width='0.3'/%3E%3C/svg%3E")`,
-                      backgroundSize: '40px 35px',
-                    }}
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                   />
-                  
-                  {/* Hover Gradient */}
-                  <div className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-5 transition-opacity duration-500`} />
-                  
-                  {/* Geometric Corner Accents */}
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
-                    <svg className="w-full h-full" viewBox="0 0 100 100">
-                      <path d="M100 0L100 100L0 0Z" fill="url(#featureGrad)" />
-                      <defs>
-                        <linearGradient id="featureGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0.5}} />
-                          <stop offset="100%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0}} />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-                  </div>
-
-                  {/* Corner Brackets */}
-                  <div className="absolute top-3 left-3 w-6 h-6 border-t-2 border-l-2 border-amber-500/20 group-hover:border-amber-500/40 transition-colors" />
-                  <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-amber-500/20 group-hover:border-amber-500/40 transition-colors" />
-                  <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-amber-500/20 group-hover:border-amber-500/40 transition-colors" />
-                  <div className="absolute bottom-3 right-3 w-6 h-6 border-b-2 border-r-2 border-amber-500/20 group-hover:border-amber-500/40 transition-colors" />
-
+                  <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-[#e2b27a]/30" />
+                  <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-[#e2b27a]/30" />
                   <div className="relative z-10">
-                    {/* Icon with Hexagon Border */}
-                    <div className="relative inline-block mb-6">
-                      <div className={`w-16 h-16 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300`}>
-                        <feature.icon className="w-8 h-8 text-white" />
+                    <div className="flex items-center justify-between mb-4">
+                      <div
+                        className={`w-11 h-11 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <step.icon className="w-6 h-6 text-[#21140f]" />
                       </div>
-                      {/* Hexagon Border */}
-                      <div className="absolute -inset-2 opacity-30 group-hover:opacity-50 transition-opacity">
-                        <svg className="w-full h-full" viewBox="0 0 100 100">
-                          <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="url(#iconGrad)" strokeWidth="0.8"/>
-                          <defs>
-                            <linearGradient id="iconGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                              <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:0.5}} />
-                              <stop offset="100%" style={{stopColor:'rgb(217, 119, 6)', stopOpacity:0.3}} />
-                            </linearGradient>
-                          </defs>
-                        </svg>
-                      </div>
+                      <span className="text-5xl font-bold text-white/5">
+                        {step.number}
+                      </span>
                     </div>
-
-                    {/* Stat Badge */}
-                    <div className="inline-block px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-amber-400 font-semibold mb-4">
-                      {feature.stat}
-                    </div>
-
-                    {/* Content */}
-                    <h3 className="text-2xl font-bold text-white mb-4 leading-tight">
-                      {feature.title}
+                    <h3 className="text-xl font-bold text-white mb-2.5 leading-tight">
+                      {step.title}
                     </h3>
-                    <p className="text-slate-400 leading-relaxed">
-                      {feature.description}
+                    <p className="text-[#d1c0aa] leading-relaxed text-sm">
+                      {step.description}
                     </p>
                   </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-                  {/* Bottom Accent Line */}
-                  <div className="absolute bottom-0 left-0 w-full h-px">
-                    <div className={`w-0 group-hover:w-full h-full bg-gradient-to-r ${feature.color} transition-all duration-500`} />
+        {/* TECHNOLOGY STACK */}
+        <section id="tech" className="py-24 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
+                Inside the Hardware
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                A Modern
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Electronics Platform
+                </span>
+              </h2>
+              <p className="text-lg text-[#d1c0aa] leading-relaxed">
+                Designed for the thermal, electrical, and mechanical realities
+                of real vehicles.
+              </p>
+            </div>
+
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+              data-animate
+            >
+              {techStack.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="relative p-6 bg-gradient-to-br from-black/80 to-[#18120f]/88 border border-white/10 rounded-2xl hover:border-[#e2b27a]/40 transition-all"
+                >
+                  <div className="flex items-start gap-3 mb-3">
+                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                      <item.icon className="w-5 h-5 text-[#e2b27a]" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-white mb-1">
+                        {item.title}
+                      </h3>
+                      <p className="text-xs text-[#d1c0aa] leading-relaxed">
+                        {item.text}
+                      </p>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            {/* DTE Systems Badge with Geometric Pattern */}
-            <div className="text-center" data-animate>
-              <div className="relative inline-flex items-center gap-6 px-10 py-8 bg-gradient-to-br from-slate-900 to-slate-800 backdrop-blur-xl border border-white/10 rounded-3xl shadow-2xl overflow-hidden">
-                {/* Background Grid */}
-                <div 
-                  className="absolute inset-0 opacity-[0.02]"
-                  style={{
-                    backgroundImage: `radial-gradient(circle at 2px 2px, rgba(251, 191, 36, 0.5) 1px, transparent 0)`,
-                    backgroundSize: '20px 20px',
-                  }}
-                />
-                
-                {/* Corner Geometric Accents */}
-                <div className="absolute top-2 left-2 w-8 h-8 border-t-2 border-l-2 border-amber-500/30" />
-                <div className="absolute top-2 right-2 w-8 h-8 border-t-2 border-r-2 border-amber-500/30" />
-                <div className="absolute bottom-2 left-2 w-8 h-8 border-b-2 border-l-2 border-amber-500/30" />
-                <div className="absolute bottom-2 right-2 w-8 h-8 border-b-2 border-r-2 border-amber-500/30" />
-                
-                <div className="relative flex items-center justify-center w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl shadow-xl">
-                  <Shield className="w-8 h-8 text-slate-900" />
+            {/* Network stats */}
+            <div
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 border border-white/10 rounded-2xl bg-gradient-to-r from-black/80 via-[#1b130f]/85 to-black/80 p-6"
+              data-animate
+            >
+              {networkStats.map((stat, idx) => (
+                <div key={idx} className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
+                    <stat.icon className="w-5 h-5 text-[#e2b27a]" />
+                  </div>
+                  <div>
+                    <p className="text-base font-semibold text-white">
+                      {stat.value}
+                    </p>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a]">
+                      {stat.label}
+                    </p>
+                  </div>
                 </div>
-                <div className="text-left relative z-10">
-                  <p className="text-xs text-slate-500 uppercase tracking-widest font-semibold mb-1">Powered By</p>
-                  <h3 className="text-2xl font-bold text-white mb-1">DTE SYSTEMS GERMANY</h3>
-                  <p className="text-sm text-amber-400 font-medium">Decades of Automotive Electronics Excellence</p>
-                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* OWNERSHIP HIGHLIGHTS */}
+        <section id="ownership" className="py-20 relative">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="grid gap-10 lg:grid-cols-[1.2fr,1fr] items-center">
+              <div data-animate>
+                <h2 className="text-3xl md:text-4xl font-bold mb-4">
+                  The Subtle Details
+                  <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                    Enthusiasts Notice
+                  </span>
+                </h2>
+                <p className="text-[#d1c0aa] text-base leading-relaxed mb-5">
+                  MAXOTO modules are designed to feel native to your vehicle,
+                  with carefully chosen connectors, cable lengths, and mounting
+                  hardware that respect the original engineering. Installations
+                  are discreet, service-friendly, and free from unnecessary
+                  intrusion into existing looms.
+                </p>
+                <ul className="space-y-2.5 text-sm text-[#e1d2be]">
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    OEM-style harnesses with automotive-grade sleeving and
+                    seals.
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    Clear, illustrated guides that match your engine bay layout.
+                  </li>
+                  <li className="flex gap-2">
+                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
+                    Mounting strategies that avoid drilling or permanent
+                    modifications.
+                  </li>
+                </ul>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4" data-animate>
+                {ownershipHighlights.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="relative p-4 bg-gradient-to-br from-black/75 to-[#18120f]/85 border border-white/10 rounded-xl"
+                  >
+                    <item.icon className="w-5 h-5 text-[#e2b27a] mb-2" />
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a] mb-1">
+                      {item.label}
+                    </p>
+                    <p className="text-sm text-[#e1d2be] leading-relaxed">
+                      {item.value}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
 
-        {/* Testimonials Section */}
-        <section id="testimonials" className="py-32 relative">
+        {/* SERVICE BENEFITS */}
+        <section className="py-20 relative">
           <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-20" data-animate>
-              <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-6">
-                Customer Excellence
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
+              data-animate
+            >
+              {serviceBenefits.map((benefit, idx) => (
+                <div
+                  key={idx}
+                  className="relative p-5 bg-gradient-to-br from-black/80 to-[#191310]/85 backdrop-blur-xl border border-white/10 rounded-xl hover:border-[#e2b27a]/40 transition-all"
+                >
+                  <div className="flex items-start gap-3.5">
+                    <div className="shrink-0 w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center">
+                      <benefit.icon className={`w-5 h-5 ${benefit.color}`} />
+                    </div>
+                    <div>
+                      <h4 className="font-bold text-white text-sm mb-1">
+                        {benefit.title}
+                      </h4>
+                      <p className="text-xs text-[#d1c0aa] leading-relaxed">
+                        {benefit.description}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* WHY MAXOTO */}
+        <section id="technology" className="py-24 relative overflow-hidden">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
+                Why Choose MAXOTO
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Trusted by Discerning
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                Redefining Automotive
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-                  Automotive Enthusiasts
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Performance Standards
                 </span>
               </h2>
-              <p className="text-xl text-slate-400 leading-relaxed">
-                {BRANDING.stats.customers} drivers worldwide have elevated their experience with MAXOTO
+              <p className="text-lg text-[#d1c0aa] leading-relaxed">
+                A legacy of innovation, precision, and excellence.
               </p>
             </div>
 
-            {/* Testimonials Carousel */}
+            <div
+              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
+              data-animate
+            >
+              {whyMaxoto.map((feature, idx) => (
+                <div
+                  key={idx}
+                  className="group relative p-6 bg-gradient-to-br from-black/80 to-[#18120f]/88 backdrop-blur-xl border border-white/10 rounded-2xl hover:border-[#e2b27a]/40 transition-all duration-500 overflow-hidden"
+                >
+                  <div
+                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                  />
+                  <div className="absolute top-2.5 left-2.5 w-5 h-5 border-t-2 border-l-2 border-[#e2b27a]/15 group-hover:border-[#e2b27a]/30 transition-colors" />
+                  <div className="absolute bottom-2.5 right-2.5 w-5 h-5 border-b-2 border-r-2 border-[#e2b27a]/15 group-hover:border-[#e2b27a]/30 transition-colors" />
+                  <div className="relative z-10">
+                    <div className="relative inline-block mb-5">
+                      <div
+                        className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300`}
+                      >
+                        <feature.icon className="w-7 h-7 text-white" />
+                      </div>
+                    </div>
+                    <div className="inline-block px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-[#f0d7ac] font-semibold mb-3">
+                      {feature.stat}
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3 leading-tight">
+                      {feature.title}
+                    </h3>
+                    <p className="text-sm text-[#e1d2be] leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* TESTIMONIALS */}
+        <section id="testimonials" className="py-24 relative">
+          <div className="max-w-7xl mx-auto px-6 lg:px-8">
+            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
+                Customer Stories
+              </span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                Built for Drivers Who
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Notice Everything
+                </span>
+              </h2>
+              <p className="text-lg text-[#d1c0aa] leading-relaxed">
+                {BRANDING.stats.customers} owners have already made the quiet
+                upgrade.
+              </p>
+            </div>
+
             <div
               ref={scrollContainerRef}
-              className="flex gap-8 overflow-x-auto pb-8 scrollbar-hide"
+              className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide"
               style={{ scrollBehavior: "smooth" }}
               data-animate
             >
               {[...testimonials, ...testimonials].map((testimonial, idx) => (
                 <div
                   key={idx}
-                  className="relative shrink-0 w-[450px] p-8 bg-gradient-to-br from-slate-900/80 to-slate-800/50 backdrop-blur-xl border border-white/10 rounded-3xl hover:border-amber-500/30 transition-all shadow-2xl group overflow-hidden"
+                  className="relative shrink-0 w-[380px] p-6 bg-gradient-to-br from-black/80 to-[#18120f]/85 backdrop-blur-xl border border-white/12 rounded-2xl hover:border-[#e2b27a]/45 transition-all shadow-2xl overflow-hidden"
                 >
-                  {/* Hexagon Pattern */}
-                  <div 
-                    className="absolute inset-0 opacity-[0.01] group-hover:opacity-[0.02] transition-opacity"
-                    style={{
-                      backgroundImage: `url("data:image/svg+xml,%3Csvg width='30' height='26' viewBox='0 0 30 26' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M15 0l7.5 4.33v8.67L15 17.33l-7.5-4.33V4.33L15 0z' fill='none' stroke='%23f59e0b' stroke-width='0.3'/%3E%3C/svg%3E")`,
-                      backgroundSize: '30px 26px',
-                    }}
-                  />
-                  
-                  {/* Corner Brackets */}
-                  <div className="absolute top-3 left-3 w-4 h-4 border-t border-l border-amber-500/20" />
-                  <div className="absolute top-3 right-3 w-4 h-4 border-t border-r border-amber-500/20" />
-                  <div className="absolute bottom-3 left-3 w-4 h-4 border-b border-l border-amber-500/20" />
-                  <div className="absolute bottom-3 right-3 w-4 h-4 border-b border-r border-amber-500/20" />
-                  
+                  <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-[#e2b27a]/30" />
+                  <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-[#e2b27a]/30" />
                   <div className="relative z-10">
-                    {/* Rating */}
-                    <div className="flex gap-1 mb-6">
+                    <div className="flex gap-1 mb-4">
                       {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star key={i} className="w-5 h-5 text-amber-400 fill-amber-400" />
+                        <Star
+                          key={i}
+                          className="w-4 h-4 text-[#e2b27a] fill-[#e2b27a]"
+                        />
                       ))}
                     </div>
-
-                    {/* Quote */}
-                    <p className="text-lg text-slate-300 leading-relaxed mb-8 italic">
+                    <p className="text-base text-[#e1d2be] leading-relaxed mb-6 italic">
                       "{testimonial.text}"
                     </p>
-
-                    {/* Author */}
-                    <div className="flex items-center gap-4 pt-6 border-t border-white/10">
+                    <div className="flex items-center gap-3 pt-5 border-t border-white/10">
                       <div className="relative">
                         <img
                           src={testimonial.avatar}
                           alt={testimonial.name}
-                          className="w-14 h-14 rounded-full ring-2 ring-amber-500/50"
+                          className="w-12 h-12 rounded-full ring-2 ring-[#e2b27a]/55"
                         />
                         {testimonial.verified && (
-                          <div className="absolute -bottom-1 -right-1 w-5 h-5 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full flex items-center justify-center ring-2 ring-slate-900">
-                            <Check className="w-3 h-3 text-slate-900" />
+                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-full flex items-center justify-center ring-2 ring-black">
+                            <Check className="w-2.5 h-2.5 text-[#1c130e]" />
                           </div>
                         )}
                       </div>
                       <div className="flex-1">
-                        <div className="font-bold text-white text-lg mb-0.5">{testimonial.name}</div>
-                        <div className="text-sm text-amber-400 font-medium mb-0.5">{testimonial.vehicle}</div>
-                        <div className="text-xs text-slate-500">{testimonial.location}</div>
+                        <div className="font-bold text-white text-base mb-0.5">
+                          {testimonial.name}
+                        </div>
+                        <div className="text-xs text-[#f0d7ac] font-medium mb-0.5">
+                          {testimonial.vehicle}
+                        </div>
+                        <div className="text-xs text-[#b1997a]">
+                          {testimonial.location}
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Hover Effect */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-amber-500/0 to-amber-500/0 group-hover:from-amber-500/5 group-hover:to-transparent rounded-3xl transition-all duration-500" />
                 </div>
               ))}
             </div>
           </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="py-32 relative">
+        {/* FAQ */}
+        <section className="py-24 relative">
           <div className="max-w-4xl mx-auto px-6 lg:px-8">
-            {/* Section Header */}
-            <div className="text-center mb-20" data-animate>
-              <span className="inline-block px-4 py-1.5 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20 rounded-full text-amber-400 text-xs font-semibold uppercase tracking-wider mb-6">
+            <div className="text-center mb-16" data-animate>
+              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
                 Frequently Asked Questions
               </span>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                Expert Answers to
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
+                Everything You Need
                 <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 to-amber-500">
-                  Your Questions
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  To Decide Clearly
                 </span>
               </h2>
             </div>
 
-            {/* FAQ Items */}
-            <div className="space-y-4" data-animate>
+            <div className="space-y-3" data-animate>
               {faqs.map((faq, idx) => (
                 <div
                   key={idx}
-                  className="relative bg-gradient-to-br from-slate-900/50 to-slate-800/30 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden hover:border-amber-500/30 transition-all"
+                  className="relative bg-gradient-to-br from-black/80 to-[#18120f]/85 backdrop-blur-xl border border-white/12 rounded-xl overflow-hidden hover:border-[#e2b27a]/40 transition-all"
                 >
-                  {/* Dot Pattern */}
-                  <div 
-                    className="absolute inset-0 opacity-[0.01]"
-                    style={{
-                      backgroundImage: `radial-gradient(circle at 1px 1px, rgba(251, 191, 36, 0.5) 1px, transparent 0)`,
-                      backgroundSize: '20px 20px',
-                    }}
-                  />
-                  
                   <button
                     onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="relative w-full flex items-center justify-between p-6 text-left group z-10"
+                    className="relative w-full flex items-center justify-between p-5 text-left group z-10"
                   >
-                    <span className="font-semibold text-white text-lg pr-8 group-hover:text-amber-400 transition-colors">
+                    <span className="font-semibold text-white text-base pr-6 group-hover:text-[#f0d7ac] transition-colors">
                       {faq.question}
                     </span>
                     <div
-                      className={`shrink-0 w-10 h-10 rounded-full flex items-center justify-center transition-all ${
+                      className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all ${
                         openFaq === idx
-                          ? "bg-gradient-to-br from-amber-400 to-amber-600 rotate-180"
+                          ? "bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rotate-180"
                           : "bg-white/5 group-hover:bg-white/10"
                       }`}
                     >
                       <ChevronDown
-                        className={`w-5 h-5 ${openFaq === idx ? "text-slate-900" : "text-amber-400"}`}
+                        className={`w-4 h-4 ${
+                          openFaq === idx ? "text-[#21140f]" : "text-[#e2b27a]"
+                        }`}
                       />
                     </div>
                   </button>
                   {openFaq === idx && (
-                    <div className="relative px-6 pb-6 z-10">
-                      <div className="p-5 bg-white/5 border border-white/5 rounded-xl">
-                        <p className="text-slate-300 leading-relaxed">{faq.answer}</p>
+                    <div className="relative px-5 pb-5 z-10">
+                      <div className="p-4 bg-white/4 border border-white/8 rounded-lg">
+                        <p className="text-[#e1d2be] leading-relaxed text-sm">
+                          {faq.answer}
+                        </p>
                       </div>
                     </div>
                   )}
@@ -1107,74 +1398,56 @@ const MaxotoLuxuryPage = () => {
           </div>
         </section>
 
-        {/* Final CTA Section */}
-        <section className="py-32 relative overflow-hidden">
-          {/* Dramatic Background with Multiple Patterns */}
-          <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-amber-950/20 to-slate-900" />
-          <div 
-            className="absolute inset-0 opacity-[0.015]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23f59e0b' stroke-width='0.5'%3E%3Ccircle cx='50' cy='50' r='40'/%3E%3Ccircle cx='50' cy='50' r='30'/%3E%3Ccircle cx='50' cy='50' r='20'/%3E%3Cline x1='10' y1='50' x2='90' y2='50'/%3E%3Cline x1='50' y1='10' x2='50' y2='90'/%3E%3C/g%3E%3C/svg%3E")`,
-              backgroundSize: '100px 100px',
-            }}
-          />
-
-          <div className="max-w-5xl mx-auto px-6 lg:px-8 text-center relative z-10" data-animate>
-            {/* Icon with Hexagon */}
-            <div className="relative inline-block mb-8">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-400 to-amber-600 rounded-3xl blur-xl opacity-50" />
-              <div className="relative inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-3xl shadow-2xl shadow-amber-500/30">
-                <Rocket className="w-10 h-10 text-slate-900" />
-              </div>
-              {/* Hexagon Border */}
-              <div className="absolute -inset-3 opacity-30">
-                <svg className="w-full h-full" viewBox="0 0 100 100">
-                  <polygon points="50 5, 90 25, 90 75, 50 95, 10 75, 10 25" fill="none" stroke="url(#ctaGrad)" strokeWidth="1"/>
-                  <defs>
-                    <linearGradient id="ctaGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" style={{stopColor:'rgb(251, 191, 36)', stopOpacity:1}} />
-                      <stop offset="100%" style={{stopColor:'rgb(217, 119, 6)', stopOpacity:0.3}} />
-                    </linearGradient>
-                  </defs>
-                </svg>
+        {/* FINAL CTA */}
+        <section className="py-24 relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#2b1b11] to-black" />
+          <div
+            className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10"
+            data-animate
+          >
+            <div className="relative inline-block mb-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-2xl blur-xl opacity-40" />
+              <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-2xl shadow-2xl shadow-[#b77b44]/40">
+                <Rocket className="w-8 h-8 text-[#21140f]" />
               </div>
             </div>
-
-            {/* Headline */}
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Experience the Pinnacle of
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 leading-tight">
+              Configure Your Next
               <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-amber-600">
-                Automotive Performance
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] via-[#e2b27a] to-[#b77b44]">
+                Quiet Upgrade
               </span>
             </h2>
-
-            <p className="text-xl text-slate-400 mb-12 max-w-3xl mx-auto leading-relaxed">
-              Join the exclusive community of {BRANDING.stats.customers} drivers who demand excellence. 
-              Transform your vehicle with precision-engineered German technology.
+            <p className="text-lg text-[#d1c0aa] mb-10 max-w-2xl mx-auto leading-relaxed">
+              Join a community of detail-obsessed drivers and discover what a
+              carefully calibrated module can do for everyday journeys and
+              long-distance escapes.
             </p>
-
-            {/* CTAs */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <CTAButton href={BRANDING.links.products} size="large" variant="primary">
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
+              <CTAButton
+                href={BRANDING.links.products}
+                size="large"
+                variant="primary"
+              >
                 Explore Our Collection
               </CTAButton>
-              <CTAButton href={BRANDING.links.contact} size="large" variant="ghost">
-                Consult Our Specialists
+              <CTAButton
+                href={BRANDING.links.contact}
+                size="large"
+                variant="ghost"
+              >
+                Speak with a Specialist
               </CTAButton>
             </div>
-
-            {/* Trust Indicators with Pattern */}
-            <div className="flex flex-wrap items-center justify-center gap-8 text-slate-400 text-sm font-medium">
+            <div className="flex flex-wrap items-center justify-center gap-6 text-[#b1997a] text-sm font-medium">
               {[
                 "Plug & Play Installation",
-                "Comprehensive Warranty",
-                "German Engineering"
+                "Reversible at Any Time",
+                "Engineered in Germany",
               ].map((item, idx) => (
-                <div key={idx} className="relative flex items-center gap-2 group">
-                  <div className="relative w-5 h-5 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center">
-                    <Check className="w-3 h-3 text-slate-900" />
-                    <div className="absolute inset-0 rounded-full bg-amber-400 blur-sm opacity-0 group-hover:opacity-50 transition-opacity" />
+                <div key={idx} className="relative flex items-center gap-2">
+                  <div className="relative w-4 h-4 rounded-full bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
+                    <Check className="w-2.5 h-2.5 text-[#21140f]" />
                   </div>
                   <span>{item}</span>
                 </div>
@@ -1183,75 +1456,92 @@ const MaxotoLuxuryPage = () => {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="relative border-t border-white/10 bg-gradient-to-b from-slate-950 to-slate-900 py-20">
-          {/* Footer Pattern */}
-          <div 
-            className="absolute inset-0 opacity-[0.01]"
-            style={{
-              backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23f59e0b' stroke-width='0.5'%3E%3Cpath d='M0 20h40M20 0v40'/%3E%3C/g%3E%3C/svg%3E")`,
-              backgroundSize: '40px 40px',
-            }}
-          />
-          
+        {/* FOOTER */}
+        <footer className="relative border-t border-white/12 bg-gradient-to-b from-black to-[#120d09] py-16">
           <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-              {/* Brand */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
               <div className="lg:col-span-2">
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="relative w-10 h-10 bg-gradient-to-br from-amber-400 to-amber-600 rounded-lg flex items-center justify-center">
-                    <Bolt className="w-6 h-6 text-slate-900" />
+                <div className="flex items-center gap-2.5 mb-3">
+                  <div className="relative w-9 h-9 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+                    <Bolt className="w-5 h-5 text-[#21140f]" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">MAXOTO</h3>
-                    <p className="text-[10px] text-slate-500 uppercase tracking-widest">Performance Engineering</p>
+                    <h3 className="text-xl font-bold text-white">MAXOTO</h3>
+                    <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.18em]">
+                      Performance Engineering
+                    </p>
                   </div>
                 </div>
-                <p className="text-slate-400 leading-relaxed max-w-md mb-6">
-                  {BRANDING.tagline}. Delivering precision-engineered performance solutions powered by DTE Systems Germany.
+                <p className="text-[#d1c0aa] leading-relaxed max-w-md mb-5 text-sm">
+                  {BRANDING.tagline}. Delivering precision-engineered
+                  performance solutions developed in partnership with European
+                  electronics specialists.
                 </p>
-                <p className="text-sm text-slate-500">
-                  Elevating the driving experience for discerning automotive enthusiasts worldwide.
+                <p className="text-xs text-[#a58b71]">
+                  Elevating the driving experience for discerning enthusiasts in{" "}
+                  {BRANDING.stats.countries} markets.
                 </p>
               </div>
 
-              {/* Products */}
               <div>
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-6">Products</h4>
-                <div className="space-y-3">
-                  {['PowerControl', 'PedalBox', 'All Products', 'Compatibility'].map((item, idx) => (
-                    <a key={idx} href="#" className="block text-slate-400 hover:text-amber-400 transition-colors">
+                <h4 className="text-white font-bold uppercase tracking-[0.22em] text-xs mb-4">
+                  Products
+                </h4>
+                <div className="space-y-2.5">
+                  {[
+                    "PowerControl",
+                    "PedalBox",
+                    "All Products",
+                    "Compatibility",
+                  ].map((item, idx) => (
+                    <a
+                      key={idx}
+                      href="#"
+                      className="block text-[#d1c0aa] hover:text-[#f0d7ac] transition-colors text-sm"
+                    >
                       {item}
                     </a>
                   ))}
                 </div>
               </div>
 
-              {/* Company */}
               <div>
-                <h4 className="text-white font-bold uppercase tracking-wider text-sm mb-6">Company</h4>
-                <div className="space-y-3">
-                  {['Technology', 'Testimonials', 'Contact', 'Support'].map((item, idx) => (
-                    <a key={idx} href="#" className="block text-slate-400 hover:text-amber-400 transition-colors">
-                      {item}
-                    </a>
-                  ))}
+                <h4 className="text-white font-bold uppercase tracking-[0.22em] text-xs mb-4">
+                  Company
+                </h4>
+                <div className="space-y-2.5">
+                  {["Technology", "Testimonials", "Contact", "Support"].map(
+                    (item, idx) => (
+                      <a
+                        key={idx}
+                        href="#"
+                        className="block text-[#d1c0aa] hover:text-[#f0d7ac] transition-colors text-sm"
+                      >
+                        {item}
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             </div>
 
-            {/* Bottom Bar */}
-            <div className="pt-8 border-t border-white/10">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-                <p className="text-slate-500 text-sm">
-                  © 2025 MAXOTO. All rights reserved. Powered by DTE Systems Germany.
+            <div className="pt-6 border-t border-white/10">
+              <div className="flex flex-col md:flex-row justify-between items-center gap-5">
+                <p className="text-[#a58b71] text-xs">
+                  © 2025 MAXOTO. All rights reserved.
                 </p>
-                <div className="flex items-center gap-8">
-                  {['Privacy Policy', 'Terms of Service', 'Warranty'].map((item, idx) => (
-                    <a key={idx} href="#" className="text-slate-500 hover:text-amber-400 transition-colors text-sm">
-                      {item}
-                    </a>
-                  ))}
+                <div className="flex items-center gap-6">
+                  {["Privacy Policy", "Terms of Service", "Warranty"].map(
+                    (item, idx) => (
+                      <a
+                        key={idx}
+                        href="#"
+                        className="text-[#a58b71] hover:text-[#f0d7ac] transition-colors text-xs"
+                      >
+                        {item}
+                      </a>
+                    )
+                  )}
                 </div>
               </div>
             </div>
@@ -1259,7 +1549,7 @@ const MaxotoLuxuryPage = () => {
         </footer>
       </div>
 
-      {/* Custom Styles */}
+      {/* Global styles */}
       <style jsx>{`
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
@@ -1271,7 +1561,7 @@ const MaxotoLuxuryPage = () => {
         @keyframes fadeInUp {
           from {
             opacity: 0;
-            transform: translateY(40px);
+            transform: translateY(30px);
           }
           to {
             opacity: 1;
@@ -1279,21 +1569,10 @@ const MaxotoLuxuryPage = () => {
           }
         }
         .animate-in {
-          animation: fadeInUp 0.8s ease-out forwards;
+          animation: fadeInUp 0.7s ease-out forwards;
         }
         [data-animate] {
           opacity: 0;
-        }
-        @keyframes spin-slow {
-          from {
-            transform: rotate(0deg);
-          }
-          to {
-            transform: rotate(360deg);
-          }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 20s linear infinite;
         }
       `}</style>
     </div>
@@ -1301,4 +1580,3 @@ const MaxotoLuxuryPage = () => {
 };
 
 export default MaxotoLuxuryPage;
-    
