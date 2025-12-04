@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: generalsans;
+    src: url("./assets/GeneralSans-Variable.ttf");
+}
+
+* {
+    font-family: generalsans;
+
+}
