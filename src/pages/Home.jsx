@@ -39,6 +39,8 @@ import {
   LineChart,
   BarChart3,
   Sparkle,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 // ============================================
@@ -71,7 +73,13 @@ const BRANDING = {
 const MaxotoLuxuryPage = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const [activeProduct, setActiveProduct] = useState(0);
+  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const [isMuted, setIsMuted] = useState(true);
   const scrollContainerRef = useRef(null);
+  const videoRef = useRef(null);
+
+  // Video paths from public folder
+  const videos = ["/1.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
 
   // Intersection Observer
   useEffect(() => {
@@ -92,6 +100,26 @@ const MaxotoLuxuryPage = () => {
 
     return () => observer.disconnect();
   }, []);
+
+  // Auto-rotate videos
+  useEffect(() => {
+    const videoElement = videoRef.current;
+    if (!videoElement) return;
+
+    const handleVideoEnd = () => {
+      setActiveVideoIndex((prev) => (prev + 1) % videos.length);
+    };
+
+    videoElement.addEventListener("ended", handleVideoEnd);
+
+    // Preload and play
+    videoElement.load();
+    videoElement.play().catch((err) => console.log("Autoplay prevented:", err));
+
+    return () => {
+      videoElement.removeEventListener("ended", handleVideoEnd);
+    };
+  }, [activeVideoIndex, videos.length]);
 
   // Smooth testimonials scroll
   useEffect(() => {
@@ -276,7 +304,7 @@ const MaxotoLuxuryPage = () => {
       role: "Automotive Enthusiast",
       location: "Munich, Germany",
       avatar: "https://i.pravatar.cc/150?img=12",
-      text: "PowerControl transformed mid-range response while leaving the car’s refinement untouched. It feels like a higher-output factory tune rather than an add-on.",
+      text: "PowerControl transformed mid-range response while leaving the car's refinement untouched. It feels like a higher-output factory tune rather than an add-on.",
       rating: 5,
       vehicle: "Audi RS6 Avant",
       verified: true,
@@ -618,16 +646,56 @@ const MaxotoLuxuryPage = () => {
 
       {/* Main content wrapper */}
       <div className="relative z-10">
-        {/* HERO */}
-        <section className="relative min-h-[88vh] flex items-center justify-center overflow-hidden">
-          {/* hero-specific stripe */}
-          <div
-            className="absolute inset-x-0 top-0 h-40 opacity-[0.12]"
-            style={{
-              backgroundImage:
-                "repeating-linear-gradient(90deg, rgba(245,227,200,0.22) 0, rgba(245,227,200,0.22) 1px, transparent 1px, transparent 16px)",
-            }}
-          />
+        {/* HERO WITH VIDEO BACKGROUND */}
+        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+          {/* Video Background */}
+          <div className="absolute inset-0 z-0">
+            <video
+              ref={videoRef}
+              key={activeVideoIndex}
+              className="absolute inset-0 w-full h-full object-cover"
+              muted={isMuted}
+              playsInline
+              autoPlay
+            >
+              <source src={videos[activeVideoIndex]} type="video/mp4" />
+            </video>
+
+            {/* Dark overlay for readability */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70" />
+          </div>
+
+          {/* Video Controls */}
+          <div className="absolute bottom-8 right-8 z-20 flex items-center gap-3">
+            {/* Mute toggle */}
+            <button
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 rounded-full transition-all"
+            >
+              {isMuted ? (
+                <VolumeX className="w-5 h-5 text-white" />
+              ) : (
+                <Volume2 className="w-5 h-5 text-white" />
+              )}
+            </button>
+
+            {/* Video indicators */}
+            <div className="flex gap-2">
+              {videos.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveVideoIndex(idx)}
+                  className={`h-1.5 rounded-full transition-all ${
+                    idx === activeVideoIndex
+                      ? "w-8 bg-[#e2b27a]"
+                      : "w-1.5 bg-white/40 hover:bg-white/60"
+                  }`}
+                />
+              ))}
+            </div>
+          </div>
+
           <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24 relative z-10">
             {/* trust badge */}
             <div className="flex justify-center mb-10" data-animate>
@@ -677,7 +745,7 @@ const MaxotoLuxuryPage = () => {
                   <div className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e2b27a]/70 to-transparent" />
                 </span>
               </h1>
-              <p className="text-lg md:text-xl text-[#d1c0aa] leading-relaxed max-w-2xl mx-auto mb-9">
+              <p className="text-lg md:text-xl text-[#e2d4c0] leading-relaxed max-w-2xl mx-auto mb-9">
                 MAXOTO modules offer measurable gains and sharper response while
                 respecting the original character of your vehicle. Each
                 application is validated on-road and on dynos to feel cohesive,
