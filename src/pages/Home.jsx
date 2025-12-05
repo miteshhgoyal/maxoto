@@ -84,31 +84,15 @@ const Home = () => {
   // Video paths
   const videos = ["/1.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
 
-  // Navigation menu items - Clean & Simple
+  // Navigation menu items - RR Style
   const menuItems = [
-    {
-      label: "PowerControl",
-      href: "/products/powercontrol",
-      description: "Performance Enhancement",
-    },
-    {
-      label: "PedalBox",
-      href: "/products/pedalbox",
-      description: "Throttle Response",
-    },
-    {
-      label: "Technology",
-      href: "#tech",
-      description: "Engineering Innovation",
-    },
-    { label: "Ownership", href: "#process", description: "Your Journey" },
-    {
-      label: "Reviews",
-      href: "#testimonials",
-      description: "Customer Stories",
-    },
-    { label: "About", href: "/about", description: "Our Story" },
-    { label: "Contact", href: "/contact", description: "Get In Touch" },
+    { label: "INSPIRING GREATNESS", href: "#hero" },
+    { label: "MODELS", href: "/products" },
+    { label: "BESPOKE", href: "/products/powercontrol" },
+    { label: "OWNERSHIP", href: "#process" },
+    { label: "PROVENANCE", href: "/about" },
+    { label: "BOUTIQUE", href: "/products/pedalbox" },
+    { label: "MUSE ARTS PROGRAMME", href: "#testimonials" },
   ];
 
   // Hero slides - RR style carousel
@@ -399,9 +383,9 @@ const Home = () => {
                 >
                   {/* Animated hamburger icon */}
                   <div className="flex flex-col gap-1">
-                    <div className="w-5 h-0.5 bg-white transition-all group-hover:w-8"></div>
-                    <div className="w-3 h-0.5 bg-white/60 transition-all group-hover:w-8"></div>
-                    <div className="w-5 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                    <div className="w-5 h-0.5 bg-white/60 transition-all group-hover:w-8"></div>
+                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
                   </div>
                   <span className="hidden md:block text-[9px] tracking-[0.3em] text-white/60 uppercase">
                     Menu
@@ -450,104 +434,139 @@ const Home = () => {
       </header>
 
       {/* ============================================ */}
-      {/* LEFT SLIDING MENU - Cleaner, Simpler Design */}
+      {/* LEFT SIDE MENU - Compact & Right-Aligned */}
       {/* ============================================ */}
       <div
-        className={`fixed inset-0 z-[100] transition-opacity duration-500 ${
+        className={`fixed inset-0 z-[100] transition-opacity duration-700 ${
           mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
       >
-        {/* Dark overlay */}
+        {/* Dark overlay - click to close */}
         <div
           className="absolute inset-0 bg-black/85 backdrop-blur-sm"
           onClick={() => setMobileMenuOpen(false)}
         />
 
-        {/* Left sliding panel - Cleaner design */}
+        {/* Left side panel - narrower width */}
         <div
-          className={`absolute left-0 top-0 bottom-0 w-full sm:w-[420px] bg-[#0f0f0f] border-r border-white/5 transition-transform duration-500 ease-out ${
+          className={`absolute left-0 top-0 bottom-0 w-full sm:w-[420px] md:w-[480px] bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0a0a0a] border-r border-white/5 transition-transform duration-500 ease-out ${
             mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="h-full overflow-y-auto flex flex-col">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/5">
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(226,178,122,0.05)_0%,_transparent_50%)] pointer-events-none" />
+
+          <div className="relative h-full overflow-y-auto flex flex-col">
+            {/* Header - Close button & Logo */}
+            <div className="flex items-center justify-between p-6 md:p-8 border-b border-white/5">
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-white/50 hover:text-white transition-colors"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
-                <span className="text-xs tracking-wider uppercase">Close</span>
+                <span className="text-[10px] tracking-[0.25em] uppercase">
+                  Close
+                </span>
               </button>
 
               {/* Logo badge */}
-              <div className="w-10 h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+              <div className="w-10 h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center opacity-80">
                 <Bolt className="w-5 h-5 text-[#1c130e]" />
               </div>
             </div>
 
-            {/* Menu items - Simple and clean */}
-            <nav className="flex-1 py-8 px-6">
+            {/* Menu items - Right aligned, compact */}
+            <nav className="flex-1 py-8 md:py-12 px-6 md:px-10">
               <div className="space-y-1">
                 {menuItems.map((item, idx) => (
-                  <a
+                  <div
                     key={idx}
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="group block py-4 px-4 rounded-lg hover:bg-white/5 transition-all duration-300"
+                    className={`transition-all duration-600 ${
+                      mobileMenuOpen
+                        ? "translate-x-0 opacity-100"
+                        : "translate-x-4 opacity-0"
+                    }`}
+                    style={{
+                      transitionDelay: mobileMenuOpen ? `${idx * 60}ms` : "0ms",
+                    }}
                   >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="text-lg font-medium text-white group-hover:text-[#e2b27a] transition-colors">
+                    <a
+                      href={item.href}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="group block text-right py-2.5 px-4 hover:bg-white/5 rounded-lg transition-all duration-300"
+                    >
+                      <div className="flex items-center justify-end gap-3">
+                        <span className="text-sm md:text-base font-light text-white/50 group-hover:text-white transition-colors tracking-[0.15em] uppercase">
                           {item.label}
-                        </div>
-                        <div className="text-xs text-white/40 mt-0.5 tracking-wide">
-                          {item.description}
-                        </div>
+                        </span>
+                        <ChevronRight className="w-4 h-4 text-white/20 group-hover:text-[#e2b27a] group-hover:translate-x-1 transition-all opacity-0 group-hover:opacity-100" />
                       </div>
-                      <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-[#e2b27a] group-hover:translate-x-1 transition-all" />
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 ))}
               </div>
             </nav>
 
             {/* Footer - CTA & Contact */}
-            <div className="p-6 border-t border-white/5 space-y-4">
-              {/* CTA Button */}
-              <a
-                href={BRANDING.links.contact}
-                onClick={() => setMobileMenuOpen(false)}
-                className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-gradient-to-r from-[#e2b27a] to-[#b77b44] text-black text-sm font-semibold tracking-wide hover:from-[#f0d7ac] hover:to-[#b77b44] transition-all group rounded-lg"
+            <div className="p-6 md:p-8 border-t border-white/5 inline-flex flex-col gap-4 items-end">
+              {/* CTA Button - Right aligned */}
+              <div
+                className={`transition-all duration-600 ${
+                  mobileMenuOpen
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-4 opacity-0"
+                }`}
+                style={{
+                  transitionDelay: mobileMenuOpen
+                    ? `${menuItems.length * 60 + 100}ms`
+                    : "0ms",
+                }}
               >
-                <span>Get Started</span>
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </a>
-
-              {/* Contact info */}
-              <div className="space-y-2 text-xs text-white/40">
-                <div className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5" />
-                  <span>+91 1800 123 4567</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <Mail className="w-3.5 h-3.5" />
-                  <span>info@maxoto.com</span>
-                </div>
+                <a
+                  href={BRANDING.links.contact}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="flex items-center justify-end gap-2 w-full px-6 py-3 bg-gradient-to-r from-[#e2b27a] to-[#b77b44] text-black text-xs font-semibold tracking-wider hover:from-[#f0d7ac] hover:to-[#b77b44] transition-all group"
+                >
+                  <span>Get Started</span>
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </a>
               </div>
 
-              {/* Social links - horizontal */}
-              <div className="flex gap-4 pt-3">
-                {["Instagram", "Facebook", "Twitter"].map((social, idx) => (
-                  <a
-                    key={idx}
-                    href={`#${social.toLowerCase()}`}
-                    className="text-[10px] tracking-wider uppercase text-white/30 hover:text-white transition-colors"
-                  >
-                    {social}
-                  </a>
-                ))}
+              {/* Contact info - Right aligned, compact */}
+              <div
+                className={`space-y-2.5 text-[11px] text-white/40 transition-all duration-600 ${
+                  mobileMenuOpen
+                    ? "translate-x-0 opacity-100"
+                    : "translate-x-4 opacity-0"
+                }`}
+                style={{
+                  transitionDelay: mobileMenuOpen
+                    ? `${menuItems.length * 60 + 200}ms`
+                    : "0ms",
+                }}
+              >
+                <div className="flex items-center justify-end gap-2">
+                  <span className="tracking-wide">+91 1800 123 4567</span>
+                  <Phone className="w-3.5 h-3.5" />
+                </div>
+                <div className="flex items-center justify-end gap-2">
+                  <span className="tracking-wide">info@maxoto.com</span>
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+
+                {/* Social links - Right aligned */}
+                <div className="flex gap-4 justify-end pt-3 border-t border-white/5 mt-4">
+                  {["Instagram", "Facebook", "Twitter"].map((social, idx) => (
+                    <a
+                      key={idx}
+                      href={`#${social.toLowerCase()}`}
+                      className="text-[9px] tracking-[0.2em] uppercase text-white/25 hover:text-white transition-colors"
+                    >
+                      {social}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
