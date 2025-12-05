@@ -443,18 +443,18 @@ const Home = () => {
       >
         {/* Dark overlay - click to close */}
         <div
-          className="absolute inset-0 bg-black/85 backdrop-blur-sm"
+          className="absolute inset-0 bg-black/20"
           onClick={() => setMobileMenuOpen(false)}
         />
 
         {/* Left side panel - narrower width */}
         <div
-          className={`absolute left-0 top-0 bottom-0 w-full sm:w-[420px] md:w-[480px] bg-gradient-to-br from-[#0a0a0a] via-[#111111] to-[#0a0a0a] border-r border-white/5 transition-transform duration-500 ease-out ${
+          className={`absolute left-0 top-0 bottom-0 w-full sm:w-[420px] md:w-[480px] bg-black/30 backdrop-blur-lg border-r border-white/5 transition-transform duration-500 ease-out ${
             mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
           {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_rgba(226,178,122,0.05)_0%,_transparent_50%)] pointer-events-none" />
+          <div className="absolute inset-0 pointer-events-none" />
 
           <div className="relative h-full overflow-y-auto flex flex-col">
             {/* Header - Close button & Logo */}
