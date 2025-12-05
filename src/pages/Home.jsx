@@ -17,7 +17,6 @@ import {
   Activity,
   TrendingUp,
   Award,
-  ThumbsUp,
   Timer,
   Layers,
   Box,
@@ -27,6 +26,7 @@ import {
   Flame,
   Rocket,
   Play,
+  Pause,
   ChevronDown,
   MapPin,
   Phone,
@@ -38,13 +38,12 @@ import {
   BadgeCheck,
   LineChart,
   BarChart3,
-  Sparkle,
   Volume2,
   VolumeX,
 } from "lucide-react";
 
 // ============================================
-// MAXOTO PREMIUM BRANDING
+// MAXOTO BRANDING
 // ============================================
 const BRANDING = {
   productName: "MAXOTO",
@@ -52,10 +51,10 @@ const BRANDING = {
   subtagline: "Precision Performance for the Discerning Driver",
 
   links: {
-    products: "https://maxoto.com/products/",
-    contact: "https://maxoto.com/contact",
-    powercontrol: "https://maxoto.com/products/powercontrol",
-    pedalbox: "https://maxoto.com/products/pedalbox",
+    products: "/products",
+    contact: "/contact",
+    powercontrol: "/products/powercontrol",
+    pedalbox: "/products/pedalbox",
   },
 
   stats: {
@@ -70,78 +69,51 @@ const BRANDING = {
   },
 };
 
-const MaxotoLuxuryPage = () => {
+const Home = () => {
   const [openFaq, setOpenFaq] = useState(null);
   const [activeProduct, setActiveProduct] = useState(0);
-  const [activeVideoIndex, setActiveVideoIndex] = useState(0);
+  const [activeSlide, setActiveSlide] = useState(0);
   const [isMuted, setIsMuted] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const scrollContainerRef = useRef(null);
   const videoRef = useRef(null);
 
-  // Video paths from public folder
+  // Video paths
   const videos = ["/1.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
 
-  // Intersection Observer
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-in");
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
+  // Hero slides - RR style carousel
+  const heroSlides = [
+    {
+      id: 0,
+      title: "POWERCONTROL",
+      subtitle: "CENTENARY EDITION",
+      description: "PRECISION PERFORMANCE ENHANCEMENT",
+      video: "/1.mp4",
+      cta: "DISCOVER NOW",
+      link: "/products/powercontrol",
+    },
+    {
+      id: 1,
+      title: "PEDALBOX",
+      subtitle: "ELECTRONIC THROTTLE MASTERY",
+      description: "INSTANT RESPONSE TECHNOLOGY",
+      video: "/2.mp4",
+      cta: "EXPLORE",
+      link: "/products/pedalbox",
+    },
+    {
+      id: 2,
+      title: "MAXOTO",
+      subtitle: "ENGINEERING EXCELLENCE",
+      description: "REDEFINING AUTOMOTIVE PERFORMANCE",
+      video: "/3.mp4",
+      cta: "LEARN MORE",
+      link: "/about",
+    },
+  ];
 
-    document.querySelectorAll("[data-animate]").forEach((el) => {
-      observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  // Auto-rotate videos
-  useEffect(() => {
-    const videoElement = videoRef.current;
-    if (!videoElement) return;
-
-    const handleVideoEnd = () => {
-      setActiveVideoIndex((prev) => (prev + 1) % videos.length);
-    };
-
-    videoElement.addEventListener("ended", handleVideoEnd);
-
-    // Preload and play
-    videoElement.load();
-    videoElement.play().catch((err) => console.log("Autoplay prevented:", err));
-
-    return () => {
-      videoElement.removeEventListener("ended", handleVideoEnd);
-    };
-  }, [activeVideoIndex, videos.length]);
-
-  // Smooth testimonials scroll
-  useEffect(() => {
-    const container = scrollContainerRef.current;
-    if (!container) return;
-
-    const scroll = () => {
-      if (
-        container.scrollLeft >=
-        container.scrollWidth - container.clientWidth
-      ) {
-        container.scrollLeft = 0;
-      } else {
-        container.scrollLeft += 0.5;
-      }
-    };
-
-    const intervalId = setInterval(scroll, 30);
-    return () => clearInterval(intervalId);
-  }, []);
-
-  // PRODUCTS
+  // Products
   const products = [
     {
       id: "powercontrol",
@@ -153,24 +125,9 @@ const MaxotoLuxuryPage = () => {
       icon: Bolt,
       accentColor: "from-[#e2b27a] via-[#d39b63] to-[#b77b44]",
       stats: [
-        {
-          label: "Power Gain",
-          value: "+30%",
-          icon: Flame,
-          color: "text-[#e2b27a]",
-        },
-        {
-          label: "Torque Gain",
-          value: "+30%",
-          icon: Rocket,
-          color: "text-[#e2b27a]",
-        },
-        {
-          label: "Compatibility",
-          value: "4,000+",
-          icon: Trophy,
-          color: "text-[#e2b27a]",
-        },
+        { label: "Power Gain", value: "+30%", icon: Flame },
+        { label: "Torque Gain", value: "+30%", icon: Rocket },
+        { label: "Compatibility", value: "4,000+", icon: Trophy },
       ],
       features: [
         "Vehicle-specific maps for thousands of engines",
@@ -179,12 +136,6 @@ const MaxotoLuxuryPage = () => {
         "Optimized for daily driving, touring, and towing",
         "Dyno-developed calibrations with road validation",
         "Fully reversible with OEM-style connectors",
-      ],
-      example: "Audi A3 (8V) 1.6 TDI 110 HP",
-      technicalHighlights: [
-        "Multi-channel sensor interfacing",
-        "High-speed microcontroller platform",
-        "Thermal and voltage protection layers",
       ],
     },
     {
@@ -197,24 +148,9 @@ const MaxotoLuxuryPage = () => {
       icon: Gauge,
       accentColor: "from-[#f0d7ac] via-[#d9b786] to-[#b28651]",
       stats: [
-        {
-          label: "Response",
-          value: "+25%",
-          icon: Zap,
-          color: "text-[#f0d7ac]",
-        },
-        {
-          label: "Settings",
-          value: "30+",
-          icon: Settings,
-          color: "text-[#f0d7ac]",
-        },
-        {
-          label: "Install",
-          value: "5-10min",
-          icon: Timer,
-          color: "text-[#f0d7ac]",
-        },
+        { label: "Response", value: "+25%", icon: Zap },
+        { label: "Settings", value: "30+", icon: Settings },
+        { label: "Install", value: "5-10min", icon: Timer },
       ],
       features: [
         "Profiles for Comfort, City, Sport, and Track use",
@@ -224,44 +160,10 @@ const MaxotoLuxuryPage = () => {
         "Optimised for both ICE and selected EV platforms",
         "Zero impact on factory safety systems",
       ],
-      example: "Toyota Land Cruiser 4.2 TD",
-      technicalHighlights: [
-        "High-resolution throttle signal processing",
-        "Mode-specific response curves",
-        "Fail-safe bypass logic",
-      ],
     },
   ];
 
-  // WHY MAXOTO
-  const whyMaxoto = [
-    {
-      icon: Layers,
-      title: "Umbrella of Innovation",
-      description:
-        "MAXOTO unites performance upgrades, diagnostics, and data services under a single, coherent engineering vision for modern vehicles.",
-      color: "from-[#f0d7ac] to-[#c89a5b]",
-      stat: "Multiple Verticals",
-    },
-    {
-      icon: Award,
-      title: "Exclusive Partnerships",
-      description:
-        "Development is anchored by long-term partnerships with European electronics specialists, including DTE Systems Germany.",
-      color: "from-[#e2b27a] to-[#b77b44]",
-      stat: "DTE Germany",
-    },
-    {
-      icon: Cpu,
-      title: "Future-Ready Technology",
-      description:
-        "Hardware and firmware stacks are designed for over-the-air updatability and compatibility with ICE, hybrid, and EV architectures.",
-      color: "from-[#f5e3c8] to-[#c89a5b]",
-      stat: "All Powertrains",
-    },
-  ];
-
-  // JOURNEY
+  // Journey steps
   const processSteps = [
     {
       number: "01",
@@ -269,7 +171,6 @@ const MaxotoLuxuryPage = () => {
       title: "Configure Your Vehicle",
       description:
         "Enter brand, model, year, and engine code to see compatible hardware, indicative gains, and available packages.",
-      color: "from-[#e2b27a] to-[#c2894b]",
     },
     {
       number: "02",
@@ -277,7 +178,6 @@ const MaxotoLuxuryPage = () => {
       title: "Curated Package Creation",
       description:
         "Our configurator suggests the right combination of PowerControl, PedalBox, and accessories for your use case.",
-      color: "from-[#f0d7ac] to-[#c89a5b]",
     },
     {
       number: "03",
@@ -285,7 +185,6 @@ const MaxotoLuxuryPage = () => {
       title: "Installation & Setup",
       description:
         "Choose between certified partner installation or guided self-install with step-by-step visuals and video support.",
-      color: "from-[#dec5a0] to-[#b17b44]",
     },
     {
       number: "04",
@@ -293,11 +192,10 @@ const MaxotoLuxuryPage = () => {
       title: "Calibration & Fine-Tuning",
       description:
         "Tailor modes, sensitivity, and profiles to your preferences, and store multiple driver presets.",
-      color: "from-[#f5e3c8] to-[#c89a5b]",
     },
   ];
 
-  // TESTIMONIALS
+  // Testimonials
   const testimonials = [
     {
       name: "Marcus Reynolds",
@@ -329,26 +227,6 @@ const MaxotoLuxuryPage = () => {
       vehicle: "BMW M4 Competition",
       verified: true,
     },
-    {
-      name: "Isabella Rossi",
-      role: "Luxury Car Owner",
-      location: "Milan, Italy",
-      avatar: "https://i.pravatar.cc/150?img=26",
-      text: "Install was neat and reversible, and the interior remains visually untouched—exactly what I wanted.",
-      rating: 5,
-      vehicle: "Mercedes-AMG GT",
-      verified: true,
-    },
-    {
-      name: "David Park",
-      role: "Tech Entrepreneur",
-      location: "Seoul, South Korea",
-      avatar: "https://i.pravatar.cc/150?img=51",
-      text: "The combination of clear documentation, hardware quality, and support made the upgrade feel like dealing with an OEM supplier.",
-      rating: 5,
-      vehicle: "Tesla Model S Plaid",
-      verified: true,
-    },
   ];
 
   // FAQ
@@ -373,1260 +251,743 @@ const MaxotoLuxuryPage = () => {
       answer:
         "In equivalent driving conditions, many customers report similar or slightly improved consumption because the engine can operate more efficiently at lower throttle openings.",
     },
-    {
-      question: "Can I revert to stock behaviour?",
-      answer:
-        "Yes. Removing the module restores stock response. PedalBox can be disabled from its handset, and PowerControl can be unplugged and bridged with the original connectors.",
-    },
-    {
-      question: "Is MAXOTO legal in my market?",
-      answer:
-        "Local regulations differ. MAXOTO modules are designed as auxiliary devices, and customers are advised to follow regional legislation and inspection requirements.",
-    },
-    {
-      question: "Can one module be moved between vehicles?",
-      answer:
-        "In many cases, harness swaps or re-coding allow reuse on another compatible platform. Our team can advise based on VIN and engine codes.",
-    },
-    {
-      question: "Do you offer fleet or business solutions?",
-      answer:
-        "Yes. Dedicated account managers work with fleet operators, tuners, and dealerships to design scalable upgrade programs.",
-    },
   ];
 
-  // SERVICE BENEFITS
-  const serviceBenefits = [
-    {
-      icon: Shield,
-      title: "Lifetime Support",
-      description:
-        "Direct access to technical specialists familiar with your exact platform.",
-      color: "text-[#e2b27a]",
-    },
-    {
-      icon: Truck,
-      title: "Global Shipping",
-      description:
-        "Secure, tracked logistics with packaging designed to protect electronics.",
-      color: "text-[#f0d7ac]",
-    },
-    {
-      icon: BadgeCheck,
-      title: "Certified Quality",
-      description:
-        "ISO-aligned assembly and testing for every production batch.",
-      color: "text-[#f5e3c8]",
-    },
-    {
-      icon: Clock,
-      title: "Rapid Installation",
-      description:
-        "Typical installs completed inside a single service appointment.",
-      color: "text-[#e2b27a]",
-    },
-  ];
-
-  // OWNERSHIP HIGHLIGHTS
-  const ownershipHighlights = [
-    {
-      icon: Activity,
-      label: "Dynamic Driving",
-      value:
-        "Balanced calibrations that keep everyday refinement while adding urgency when requested.",
-    },
-    {
-      icon: LineChart,
-      label: "Measured Gains",
-      value:
-        "Independent dyno figures demonstrate repeatable improvements across torque bands.",
-    },
-    {
-      icon: Users,
-      label: "Community",
-      value:
-        "Owner meets, technical deep-dives, and test days hosted with partner facilities.",
-    },
-    {
-      icon: Globe,
-      label: "Global Presence",
-      value: `${BRANDING.stats.countries} active markets through distributors and installers.`,
-    },
-  ];
-
-  // TECH STACK
-  const techStack = [
-    {
-      icon: CircuitBoard,
-      title: "Automotive-Grade Hardware",
-      text: "PCBs, housings, and connectors designed for vibration, heat, and moisture in engine bays and cabins.",
-    },
-    {
-      icon: Cpu,
-      title: "Real-Time Processing",
-      text: "High-speed microcontrollers process sensor data and pedal inputs within milliseconds.",
-    },
-    {
-      icon: Activity,
-      title: "Safety Layers",
-      text: "Redundant monitoring, watchdog logic, and conservative default maps protect critical systems.",
-    },
-    {
-      icon: BarChart3,
-      title: "Data-Led Development",
-      text: "Dyno sessions, telemetry logs, and customer feedback all feed into map refinement.",
-    },
-  ];
-
-  // NETWORK GRID
-  const networkStats = [
-    { label: "Certified Installers", value: "120+", icon: Wrench },
-    { label: "Partner Dealerships", value: "80+", icon: MapPin },
-    { label: "Test Vehicles", value: "160+", icon: Box },
-    { label: "Support Languages", value: "10+", icon: Globe },
-  ];
-
-  // CTA Button
-  const CTAButton = ({
-    href,
-    children,
-    className = "",
-    size = "default",
-    variant = "primary",
-  }) => {
-    const sizeClasses = {
-      small: "px-5 py-2.5 text-sm",
-      default: "px-7 py-3.5 text-base",
-      large: "px-9 py-4 text-lg",
+  // Scroll progress
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrolled = window.scrollY;
+      const maxScroll = 200;
+      setScrollProgress(Math.min(scrolled / maxScroll, 1));
     };
 
-    const variantClasses = {
-      primary:
-        "bg-gradient-to-r from-[#e2b27a] via-[#d3a267] to-[#b77b44] text-[#1c130e] hover:from-[#f0d7ac] hover:to-[#b77b44] shadow-lg shadow-[#b77b44]/25",
-      secondary:
-        "bg-white/5 backdrop-blur-sm text-[#f5e3c8] border border-white/15 hover:bg-white/10 hover:border-white/30",
-      ghost:
-        "bg-transparent text-[#e2b27a] border-2 border-[#e2b27a]/60 hover:bg-[#e2b27a] hover:text-[#1c130e] hover:border-[#e2b27a]",
-    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-    return (
-      <a
-        href={href}
-        className={`group inline-flex items-center justify-center gap-2.5 ${sizeClasses[size]} ${variantClasses[variant]} font-semibold rounded-xl transition-all duration-300 hover:scale-[1.02] ${className}`}
-      >
-        <span className="tracking-wide">{children}</span>
-        <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-      </a>
-    );
+  // Auto-slide carousel
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % heroSlides.length);
+    }, 8000);
+
+    return () => clearInterval(timer);
+  }, [heroSlides.length]);
+
+  // Video controls
+  const togglePlayPause = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause();
+      } else {
+        videoRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
+  const toggleMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isMuted;
+      setIsMuted(!isMuted);
+    }
+  };
+
+  // Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("animate-in");
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll("[data-animate]").forEach((el) => {
+      observer.observe(el);
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  // Testimonials auto-scroll
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    const scroll = () => {
+      if (
+        container.scrollLeft >=
+        container.scrollWidth - container.clientWidth
+      ) {
+        container.scrollLeft = 0;
+      } else {
+        container.scrollLeft += 0.5;
+      }
+    };
+
+    const intervalId = setInterval(scroll, 30);
+    return () => clearInterval(intervalId);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#080606] text-white overflow-hidden">
-      {/* Global SVG background patterns */}
-      <div className="fixed inset-0 z-0">
-        {/* Fine cross grid */}
-        <div
-          className="absolute inset-0 opacity-[0.03]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23a67c52' stroke-width='0.4'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/svg%3E")`,
-            backgroundSize: "60px 60px",
-          }}
-        />
-        {/* Diagonal weave */}
-        <div
-          className="absolute inset-0 opacity-[0.018]"
-          style={{
-            backgroundImage:
-              "repeating-linear-gradient(135deg, rgba(200,154,91,0.22) 0px, rgba(200,154,91,0.22) 1px, transparent 1px, transparent 10px)",
-          }}
-        />
-        {/* Hex mesh */}
-        <div
-          className="absolute inset-0 opacity-[0.02]"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='90' height='78' viewBox='0 0 90 78' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22 2l22 12v24L22 50 0 38V14L22 2zm46 0l22 12v24L68 50 46 38V14L68 2z' fill='none' stroke='%237f5a3a' stroke-width='0.5'/%3E%3C/svg%3E")`,
-            backgroundSize: "90px 78px",
-          }}
-        />
-        {/* Dot field */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage:
-              "radial-gradient(circle at 1px 1px, rgba(245,227,200,0.35) 1px, transparent 0)",
-            backgroundSize: "55px 55px",
-          }}
-        />
-        {/* Soft orbs */}
-        <div className="absolute -top-1/3 -left-1/3 w-[650px] h-[650px] bg-gradient-radial from-[#e2b27a]/20 via-[#a67c52]/5 to-transparent rounded-full blur-3xl" />
-        <div className="absolute top-1/3 -right-1/3 w-[520px] h-[520px] bg-gradient-radial from-[#f0d7ac]/18 via-[#b78a57]/6 to-transparent rounded-full blur-3xl" />
-        <div className="absolute -bottom-1/3 left-1/4 w-[580px] h-[580px] bg-gradient-radial from-[#c29a6a]/15 via-[#604534]/5 to-transparent rounded-full blur-3xl" />
-        {/* Vignette */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black/80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/50" />
-      </div>
+    <div className="min-h-screen bg-black text-white overflow-hidden">
+      {/* ============================================ */}
+      {/* HEADER - Rolls-Royce inspired */}
+      {/* ============================================ */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+        style={{
+          backgroundColor: `rgba(0, 0, 0, ${scrollProgress * 0.95})`,
+          backdropFilter: `blur(${scrollProgress * 20}px)`,
+        }}
+      >
+        <div className="border-b border-white/10">
+          <div className="max-w-[1920px] mx-auto px-6 lg:px-12">
+            <div className="flex items-center justify-between h-20">
+              {/* Left - Menu */}
+              <div className="flex-1 flex justify-start">
+                <button className="group flex flex-col items-center gap-1 hover:opacity-80 transition-opacity">
+                  <div className="flex gap-0.5">
+                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                    <div className="w-3 h-0.5 bg-white/40"></div>
+                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                  </div>
+                  <span className="text-[9px] tracking-[0.3em] text-white/60 uppercase">
+                    Menu
+                  </span>
+                </button>
+              </div>
 
-      {/* Offer bar */}
-      <div className="relative z-40 bg-[#d4b28a] text-[#271710] text-sm md:text-base py-2 px-4 flex flex-col md:flex-row items-center justify-center gap-1 border-b border-[#b3895c]">
-        <p className="text-center font-medium">
-          Introductory programs available for selected vehicles with full module
-          and harness warranty.
-        </p>
-        <a
-          href={BRANDING.links.products}
-          className="underline underline-offset-4 font-semibold text-[#3e2414]"
-        >
-          View Programs
-        </a>
-      </div>
+              {/* Center - MAXOTO Monogram */}
+              <div className="absolute left-1/2 -translate-x-1/2">
+                <a
+                  href="/"
+                  className="flex items-center gap-2.5 transition-transform hover:scale-105"
+                >
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg blur-sm opacity-60" />
+                    <div className="relative w-10 h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+                      <Bolt className="w-6 h-6 text-[#1c130e]" />
+                    </div>
+                  </div>
+                  <div>
+                    <h1 className="text-lg font-bold tracking-tight text-white">
+                      MAXOTO
+                    </h1>
+                    <p className="text-[8px] text-[#c3ac93] uppercase tracking-[0.25em]">
+                      Performance Engineering
+                    </p>
+                  </div>
+                </a>
+              </div>
 
-      {/* Nav */}
-      <nav className="relative z-50 border-b border-white/10 backdrop-blur-xl bg-black/70">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center gap-2.5">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg blur-sm opacity-60" />
-                <div className="relative w-9 h-9 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
-                  <Bolt className="w-5 h-5 text-[#1c130e]" />
+              {/* Right - Dealers */}
+              <div className="flex-1 flex justify-end">
+                <button className="group flex items-center gap-2 text-sm tracking-wider hover:opacity-80 transition-opacity">
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <circle cx="11" cy="11" r="8" strokeWidth="2" />
+                    <path d="M21 21l-4.35-4.35" strokeWidth="2" />
+                  </svg>
+                  <span className="text-xs tracking-[0.2em] uppercase text-white/80">
+                    Find Dealer
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* ============================================ */}
+      {/* HERO CAROUSEL - Full screen RR style */}
+      {/* ============================================ */}
+      <section className="relative h-screen w-full overflow-hidden">
+        {/* Slides */}
+        {heroSlides.map((slide, index) => (
+          <div
+            key={slide.id}
+            className={`absolute inset-0 transition-opacity duration-1000 ${
+              activeSlide === index ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
+          >
+            {/* Video Background */}
+            <video
+              ref={activeSlide === index ? videoRef : null}
+              className="absolute inset-0 w-full h-full object-cover"
+              src={slide.video}
+              autoPlay
+              loop
+              muted={isMuted}
+              playsInline
+            />
+
+            {/* Gradient overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+
+            {/* Content */}
+            <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
+              <div className="max-w-4xl mx-auto space-y-6">
+                {/* Small label */}
+                <p
+                  className="text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 animate-fade-in"
+                  style={{ animationDelay: "0.2s" }}
+                >
+                  {slide.description}
+                </p>
+
+                {/* Main title */}
+                <h1
+                  className="text-6xl md:text-7xl lg:text-8xl font-light tracking-[0.15em] text-white animate-fade-in"
+                  style={{ animationDelay: "0.4s" }}
+                >
+                  {slide.title}
+                </h1>
+
+                {/* Subtitle */}
+                <p
+                  className="text-xl md:text-2xl lg:text-3xl tracking-[0.25em] uppercase text-white/90 animate-fade-in"
+                  style={{ animationDelay: "0.6s" }}
+                >
+                  {slide.subtitle}
+                </p>
+
+                {/* CTA */}
+                <div
+                  className="pt-8 animate-fade-in"
+                  style={{ animationDelay: "0.8s" }}
+                >
+                  <a
+                    href={slide.link}
+                    className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+                  >
+                    <span>{slide.cta}</span>
+                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                  </a>
                 </div>
               </div>
+            </div>
+          </div>
+        ))}
+
+        {/* Video Controls */}
+        <div className="absolute bottom-8 right-8 z-30 flex items-center gap-3">
+          <button
+            onClick={toggleMute}
+            className="w-11 h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
+            aria-label={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? (
+              <VolumeX className="w-5 h-5 text-white" />
+            ) : (
+              <Volume2 className="w-5 h-5 text-white" />
+            )}
+          </button>
+
+          <button
+            onClick={togglePlayPause}
+            className="w-11 h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
+            aria-label={isPlaying ? "Pause" : "Play"}
+          >
+            {isPlaying ? (
+              <Pause className="w-5 h-5 text-white" />
+            ) : (
+              <Play className="w-5 h-5 text-white ml-0.5" />
+            )}
+          </button>
+        </div>
+
+        {/* Pagination - RR style animated circles */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+          {heroSlides.map((slide, index) => (
+            <button
+              key={slide.id}
+              onClick={() => setActiveSlide(index)}
+              className="group relative"
+              aria-label={`Go to slide ${index + 1}`}
+            >
+              <svg
+                className="w-5 h-5"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                {/* Progress ring */}
+                <circle
+                  cx="10"
+                  cy="10"
+                  r="8"
+                  fill="none"
+                  stroke="white"
+                  strokeWidth="1.5"
+                  opacity={activeSlide === index ? "1" : "0.3"}
+                  className={`transition-all duration-500 ${
+                    activeSlide === index ? "animate-dash" : ""
+                  }`}
+                  strokeDasharray="50 50"
+                  strokeDashoffset={activeSlide === index ? "-50" : "0"}
+                />
+                {/* Center dot */}
+                <circle
+                  cx="10"
+                  cy="10"
+                  r={activeSlide === index ? "3" : "2.5"}
+                  fill="white"
+                  opacity={activeSlide === index ? "1" : "0.5"}
+                  className="transition-all duration-300"
+                />
+              </svg>
+            </button>
+          ))}
+        </div>
+
+        {/* Scroll indicator */}
+        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <ChevronDown className="w-7 h-7 text-white/60" />
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* BRAND STORY */}
+      {/* ============================================ */}
+      <section className="relative py-24 bg-black overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <div className="grid gap-12 lg:grid-cols-2 items-center">
+            {/* Left content */}
+            <div data-animate>
+              <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+                ENGINEERING EXCELLENCE
+              </p>
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+                A Quietly Obsessive
+                <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+                  Engineering Culture
+                </span>
+              </h2>
+              <p className="text-lg text-white/70 leading-relaxed mb-6">
+                MAXOTO was founded by calibration engineers and test drivers who
+                spent their early careers inside OEM development programs. The
+                goal was simple: offer measurable performance benefits without
+                the drama and compromises that often define the aftermarket.
+              </p>
+              <p className="text-base text-white/60 leading-relaxed">
+                Every module is the product of hundreds of hours of data
+                logging, dyno work, and route validation on real roads—from
+                high-altitude passes to dense city traffic.
+              </p>
+            </div>
+
+            {/* Right - image placeholder */}
+            <div
+              className="relative aspect-[4/3] overflow-hidden rounded-2xl"
+              data-animate
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-[#2b1b11] to-black flex items-center justify-center border border-white/10">
+                <div className="text-center">
+                  <CircuitBoard className="w-20 h-20 text-[#e2b27a] mx-auto mb-4 opacity-40" />
+                  <p className="text-sm text-white/40 tracking-[0.25em] uppercase">
+                    Engineering Lab Image
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* DISCOVER PRODUCTS - RR style cards */}
+      {/* ============================================ */}
+      <section id="products" className="relative py-24 bg-[#0a0a0a]">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+              FEATURED MODULES
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+              Discover Your Performance
+            </h2>
+            <p className="text-lg text-white/70 leading-relaxed">
+              Choose from our precision-engineered modules or configure a
+              bespoke solution for your vehicle.
+            </p>
+          </div>
+
+          {/* Product Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+            {products.map((product, index) => (
+              <a
+                key={index}
+                href={BRANDING.links[product.id]}
+                className="group relative aspect-[3/4] overflow-hidden bg-black rounded-2xl"
+                data-animate
+              >
+                {/* Background gradient */}
+                <div
+                  className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-20 transition-opacity duration-700 group-hover:opacity-30`}
+                />
+
+                {/* Pattern overlay */}
+                <div
+                  className="absolute inset-0 opacity-[0.03]"
+                  style={{
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='0.4'%3E%3Cpath d='M30 0v60M0 30h60'/%3E%3C/g%3E%3C/svg%3E")`,
+                    backgroundSize: "60px 60px",
+                  }}
+                />
+
+                {/* Icon in center */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <product.icon className="w-32 h-32 text-[#e2b27a] opacity-10 group-hover:opacity-20 transition-all duration-700 group-hover:scale-110" />
+                </div>
+
+                {/* Content */}
+                <div className="absolute inset-x-0 bottom-0 p-10 text-white">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div
+                      className={`w-12 h-12 bg-gradient-to-br ${product.accentColor} rounded-xl flex items-center justify-center`}
+                    >
+                      <product.icon className="w-7 h-7 text-[#1c130e]" />
+                    </div>
+                  </div>
+
+                  <p className="text-xs tracking-[0.25em] uppercase text-white/70 mb-2">
+                    {product.tagline}
+                  </p>
+                  <h3 className="text-3xl md:text-4xl font-light tracking-wide mb-3">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-white/60 leading-relaxed mb-6">
+                    {product.subtitle}
+                  </p>
+
+                  {/* Stats */}
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {product.stats.map((stat, idx) => (
+                      <div key={idx} className="text-center">
+                        <div className="text-2xl font-bold text-white mb-1">
+                          {stat.value}
+                        </div>
+                        <div className="text-[10px] uppercase tracking-[0.15em] text-white/50">
+                          {stat.label}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                    <span>Explore</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </div>
+              </a>
+            ))}
+          </div>
+
+          {/* View all CTA */}
+          <div className="text-center" data-animate>
+            <a
+              href={BRANDING.links.products}
+              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+            >
+              <span>View All Products</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* PROCESS / JOURNEY */}
+      {/* ============================================ */}
+      <section id="process" className="relative py-24 bg-black">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+              OWNERSHIP JOURNEY
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+              From Curiosity to Confidence
+            </h2>
+            <p className="text-lg text-white/70 leading-relaxed">
+              A guided path from first inquiry to your first calibrated drive.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {processSteps.map((step, idx) => (
+              <div
+                key={idx}
+                className="group relative p-8 bg-[#0f0f0f] border border-white/10 hover:border-[#e2b27a]/40 transition-all duration-500"
+                data-animate
+              >
+                {/* Number watermark */}
+                <div className="absolute top-4 right-4 text-6xl font-bold text-white/5">
+                  {step.number}
+                </div>
+
+                {/* Icon */}
+                <div className="relative w-14 h-14 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                  <step.icon className="w-8 h-8 text-[#1c130e]" />
+                </div>
+
+                <h3 className="text-xl font-semibold text-white mb-3">
+                  {step.title}
+                </h3>
+                <p className="text-sm text-white/60 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* TESTIMONIALS - Auto-scrolling */}
+      {/* ============================================ */}
+      <section
+        id="testimonials"
+        className="relative py-24 bg-[#0a0a0a] overflow-hidden"
+      >
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-16">
+          <div className="text-center max-w-3xl mx-auto">
+            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+              CUSTOMER STORIES
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+              Built for Drivers Who Notice Everything
+            </h2>
+            <p className="text-lg text-white/70 leading-relaxed">
+              {BRANDING.stats.customers} owners have made the quiet upgrade.
+            </p>
+          </div>
+        </div>
+
+        <div
+          ref={scrollContainerRef}
+          className="flex gap-6 overflow-x-auto pb-6 px-6 scrollbar-hide"
+          style={{ scrollBehavior: "smooth" }}
+        >
+          {[...testimonials, ...testimonials].map((testimonial, idx) => (
+            <div
+              key={idx}
+              className="shrink-0 w-[400px] p-8 bg-black border border-white/10 hover:border-[#e2b27a]/40 transition-all"
+            >
+              {/* Stars */}
+              <div className="flex gap-1 mb-4">
+                {[...Array(testimonial.rating)].map((_, i) => (
+                  <Star
+                    key={i}
+                    className="w-4 h-4 text-[#e2b27a] fill-[#e2b27a]"
+                  />
+                ))}
+              </div>
+
+              {/* Quote */}
+              <p className="text-base text-white/80 leading-relaxed mb-6 italic">
+                "{testimonial.text}"
+              </p>
+
+              {/* Author */}
+              <div className="flex items-center gap-3 pt-6 border-t border-white/10">
+                <img
+                  src={testimonial.avatar}
+                  alt={testimonial.name}
+                  className="w-12 h-12 rounded-full ring-2 ring-[#e2b27a]/50"
+                />
+                <div>
+                  <div className="font-semibold text-white text-base">
+                    {testimonial.name}
+                  </div>
+                  <div className="text-xs text-[#e2b27a]">
+                    {testimonial.vehicle}
+                  </div>
+                  <div className="text-xs text-white/50">
+                    {testimonial.location}
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* FAQ */}
+      {/* ============================================ */}
+      <section className="relative py-24 bg-black">
+        <div className="max-w-4xl mx-auto px-6 lg:px-12">
+          <div className="text-center mb-16">
+            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+              FREQUENTLY ASKED QUESTIONS
+            </p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+              Everything You Need to Decide Clearly
+            </h2>
+          </div>
+
+          <div className="space-y-4">
+            {faqs.map((faq, idx) => (
+              <div
+                key={idx}
+                className="bg-[#0f0f0f] border border-white/10 hover:border-[#e2b27a]/40 transition-all"
+                data-animate
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
+                  className="w-full flex items-center justify-between p-6 text-left"
+                >
+                  <span className="font-semibold text-white text-lg pr-6">
+                    {faq.question}
+                  </span>
+                  <div
+                    className={`shrink-0 w-10 h-10 flex items-center justify-center transition-all ${
+                      openFaq === idx
+                        ? "bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rotate-180"
+                        : "bg-white/5"
+                    }`}
+                  >
+                    <ChevronDown
+                      className={`w-5 h-5 ${
+                        openFaq === idx ? "text-[#1c130e]" : "text-[#e2b27a]"
+                      }`}
+                    />
+                  </div>
+                </button>
+                {openFaq === idx && (
+                  <div className="px-6 pb-6">
+                    <p className="text-white/70 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* FINAL CTA */}
+      {/* ============================================ */}
+      <section className="relative py-32 bg-gradient-to-br from-black via-[#1a1108] to-black overflow-hidden">
+        <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
+          <div className="relative inline-block mb-8">
+            <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] blur-2xl opacity-40" />
+            <div className="relative w-20 h-20 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center shadow-2xl">
+              <Rocket className="w-10 h-10 text-[#1c130e]" />
+            </div>
+          </div>
+
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+            Configure Your Next
+            <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
+              Quiet Upgrade
+            </span>
+          </h2>
+
+          <p className="text-lg text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
+            Join a community of detail-obsessed drivers and discover what a
+            carefully calibrated module can do for everyday journeys.
+          </p>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+            <a
+              href={BRANDING.links.products}
+              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+            >
+              <span>Explore Collection</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </a>
+            <a
+              href={BRANDING.links.contact}
+              className="inline-flex items-center gap-3 px-10 py-4 bg-transparent border-2 border-white/20 text-white text-sm tracking-[0.25em] uppercase font-semibold hover:border-white/40 transition-all group"
+            >
+              <span>Contact Specialist</span>
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </a>
+          </div>
+
+          {/* Trust badges */}
+          <div className="flex flex-wrap items-center justify-center gap-8 text-white/60 text-sm">
+            {[
+              "Plug & Play Installation",
+              "Reversible at Any Time",
+              "Engineered in Germany",
+            ].map((item, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#e2b27a]" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============================================ */}
+      {/* FOOTER */}
+      {/* ============================================ */}
+      <footer className="relative bg-black border-t border-white/10 py-16">
+        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+          {/* Logo */}
+          <div className="flex justify-center mb-12">
+            <div className="flex items-center gap-2.5">
+              <div className="w-12 h-12 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
+                <Bolt className="w-7 h-7 text-[#1c130e]" />
+              </div>
               <div>
-                <h1 className="text-xl font-bold tracking-tight text-white">
-                  MAXOTO
-                </h1>
-                <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.18em]">
+                <h3 className="text-xl font-bold text-white">MAXOTO</h3>
+                <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.25em]">
                   Performance Engineering
                 </p>
               </div>
             </div>
-
-            <div className="hidden md:flex items-center gap-6">
-              <a
-                href="#products"
-                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
-              >
-                Products
-              </a>
-              <a
-                href="#process"
-                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
-              >
-                Journey
-              </a>
-              <a
-                href="#tech"
-                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
-              >
-                Technology
-              </a>
-              <a
-                href="#ownership"
-                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
-              >
-                Ownership
-              </a>
-              <a
-                href="#testimonials"
-                className="text-sm text-[#d1c0aa] hover:text-[#f0d7ac] font-medium"
-              >
-                Reviews
-              </a>
-              <CTAButton
-                href={BRANDING.links.contact}
-                size="small"
-                variant="primary"
-              >
-                Contact
-              </CTAButton>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Main content wrapper */}
-      <div className="relative z-10">
-        {/* HERO WITH VIDEO BACKGROUND */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          {/* Video Background */}
-          <div className="absolute inset-0 z-0">
-            <video
-              ref={videoRef}
-              key={activeVideoIndex}
-              className="absolute inset-0 w-full h-full object-cover"
-              muted={isMuted}
-              playsInline
-              autoPlay
-            >
-              <source src={videos[activeVideoIndex]} type="video/mp4" />
-            </video>
-
-            {/* Dark overlay for readability */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-black/90" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-transparent to-black/70" />
           </div>
 
-          {/* Video Controls */}
-          <div className="absolute bottom-8 right-8 z-20 flex items-center gap-3">
-            {/* Mute toggle */}
-            <button
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-3 bg-black/40 hover:bg-black/60 backdrop-blur-md border border-white/20 rounded-full transition-all"
-            >
-              {isMuted ? (
-                <VolumeX className="w-5 h-5 text-white" />
-              ) : (
-                <Volume2 className="w-5 h-5 text-white" />
-              )}
-            </button>
-
-            {/* Video indicators */}
-            <div className="flex gap-2">
-              {videos.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveVideoIndex(idx)}
-                  className={`h-1.5 rounded-full transition-all ${
-                    idx === activeVideoIndex
-                      ? "w-8 bg-[#e2b27a]"
-                      : "w-1.5 bg-white/40 hover:bg-white/60"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 py-20 md:py-24 relative z-10">
-            {/* trust badge */}
-            <div className="flex justify-center mb-10" data-animate>
-              <div className="relative inline-flex items-center gap-2.5 px-4 py-2 bg-black/40 backdrop-blur-xl border border-white/12 rounded-full">
-                <div className="flex -space-x-1.5">
-                  {[12, 45, 33].map((img) => (
-                    <div
-                      key={img}
-                      className="w-7 h-7 rounded-full border-2 border-[#120c09] ring-1 ring-[#e2b27a]/50 overflow-hidden"
-                    >
-                      <img
-                        src={`https://i.pravatar.cc/40?img=${img}`}
-                        alt=""
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
-                  ))}
-                </div>
-                <span className="text-xs text-[#e2d4c0] font-medium">
-                  Trusted by {BRANDING.stats.customers} drivers worldwide
-                </span>
-                <div className="flex gap-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star
-                      key={i}
-                      className="w-3 h-3 text-[#e2b27a] fill-[#e2b27a]"
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* headline */}
-            <div className="text-center max-w-4xl mx-auto mb-12" data-animate>
-              <div className="mb-5">
-                <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em]">
-                  Tailored Performance, Calm Luxury
-                </span>
-              </div>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] mb-6">
-                <span className="text-white">Quietly Redefine</span>
-                <br />
-                <span className="relative inline-block">
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] via-[#e2b27a] to-[#b77b44]">
-                    Every Drive
-                  </span>
-                  <div className="absolute -bottom-1.5 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#e2b27a]/70 to-transparent" />
-                </span>
-              </h1>
-              <p className="text-lg md:text-xl text-[#e2d4c0] leading-relaxed max-w-2xl mx-auto mb-9">
-                MAXOTO modules offer measurable gains and sharper response while
-                respecting the original character of your vehicle. Each
-                application is validated on-road and on dynos to feel cohesive,
-                not intrusive.
-              </p>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5">
-                <CTAButton
-                  href={BRANDING.links.products}
-                  size="large"
-                  variant="primary"
-                >
-                  Explore Products
-                </CTAButton>
-                <CTAButton href="#process" size="large" variant="secondary">
-                  View Ownership Journey
-                </CTAButton>
-              </div>
-            </div>
-
-            {/* hero stats */}
-            <div
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto"
-              data-animate
-            >
-              {[
-                { icon: Flame, value: "+30%", label: "Power" },
-                { icon: Trophy, value: "4,000+", label: "Vehicles" },
-                { icon: Timer, value: "15 min", label: "Install" },
-                { icon: Shield, value: "99.8%", label: "Satisfaction" },
-              ].map((stat, idx) => (
-                <div
-                  key={idx}
-                  className="relative group p-5 bg-gradient-to-br from-black/70 to-[#1a1511]/80 backdrop-blur-xl border border-white/8 rounded-xl hover:border-[#e2b27a]/40 transition-all duration-300 overflow-hidden"
-                >
-                  <div
-                    className="absolute inset-0 opacity-[0.07]"
-                    style={{
-                      backgroundImage:
-                        "radial-gradient(circle at 0 0, rgba(226,178,122,0.35) 0, transparent 50%)",
-                    }}
-                  />
-                  <div className="absolute top-1.5 left-1.5 w-3 h-3 border-t border-l border-[#e2b27a]/25" />
-                  <div className="absolute bottom-1.5 right-1.5 w-3 h-3 border-b border-r border-[#e2b27a]/25" />
-                  <div className="relative z-10">
-                    <stat.icon className="w-7 h-7 text-[#e2b27a] mb-2 group-hover:scale-110 transition-transform" />
-                    <div className="text-2xl font-bold text-white mb-0.5">
-                      {stat.value}
-                    </div>
-                    <div className="text-xs text-[#b1997a] uppercase tracking-[0.18em] font-medium">
-                      {stat.label}
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* BRAND STORY / ABOUT */}
-        <section className="py-20 relative overflow-hidden">
-          <div
-            className="absolute inset-x-0 top-0 h-px"
-            style={{
-              backgroundImage:
-                "linear-gradient(to right, transparent, rgba(226,178,122,0.4), transparent)",
-            }}
-          />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="grid gap-10 lg:grid-cols-[1.2fr,1fr] items-start">
-              <div data-animate>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  A Quietly Obsessive
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                    Engineering Culture
-                  </span>
-                </h2>
-                <p className="text-[#d1c0aa] text-base leading-relaxed mb-4">
-                  MAXOTO was founded by calibration engineers and test drivers
-                  who spent their early careers inside OEM development programs.
-                  The goal was simple: offer measurable performance benefits
-                  without the drama and compromises that often define the
-                  aftermarket.
-                </p>
-                <p className="text-[#d1c0aa] text-base leading-relaxed mb-4">
-                  Every module is the product of hundreds of hours of data
-                  logging, dyno work, and route validation on real roads—from
-                  high-altitude passes to dense city traffic. The result is an
-                  upgrade that integrates with how modern vehicles are actually
-                  used.
-                </p>
-                <ul className="space-y-2.5 text-sm text-[#e1d2be]">
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    Cross-functional teams spanning calibration, electronics,
-                    and vehicle dynamics.
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    Development loops that include feedback from owners, tuners,
-                    and professional drivers.
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    Documentation and support material written for both
-                    enthusiasts and workshops.
-                  </li>
-                </ul>
-              </div>
-
-              <div
-                className="relative rounded-2xl border border-white/10 bg-gradient-to-br from-black/80 to-[#1b130f]/90 p-6 overflow-hidden"
-                data-animate
+          {/* Links */}
+          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-12 text-sm">
+            {[
+              "PowerControl",
+              "PedalBox",
+              "Technology",
+              "Contact",
+              "Privacy",
+              "Terms",
+              "Warranty",
+              "Support",
+            ].map((link, index) => (
+              <a
+                key={index}
+                href={`/${link.toLowerCase().replace(" ", "-")}`}
+                className="text-white/60 hover:text-white transition-colors tracking-wide"
               >
-                <div
-                  className="absolute inset-0 opacity-[0.06]"
-                  style={{
-                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='60' cy='60' r='52' fill='none' stroke='%23c89a5b' stroke-width='0.6' stroke-dasharray='4 4'/%3E%3Ccircle cx='60' cy='60' r='32' fill='none' stroke='%23f5e3c8' stroke-width='0.4' stroke-dasharray='2 6'/%3E%3Cline x1='8' y1='60' x2='112' y2='60' stroke='%23a67c52' stroke-width='0.4' stroke-dasharray='3 5'/%3E%3C/svg%3E")`,
-                    backgroundSize: "120px 120px",
-                  }}
-                />
-                <div className="relative z-10 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
-                      <Sparkles className="w-5 h-5 text-[#1c130e]" />
-                    </div>
-                    <div>
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a]">
-                        Calibration Philosophy
-                      </p>
-                      <p className="text-sm text-[#f5e3c8] font-medium">
-                        Factory integration, aftermarket flexibility.
-                      </p>
-                    </div>
-                  </div>
-                  <p className="text-sm text-[#e1d2be] leading-relaxed">
-                    Rather than chasing headline dyno figures at all costs,
-                    MAXOTO focuses on sustainable, repeatable performance that
-                    feels natural in day-to-day use. The emphasis is on how the
-                    car responds through each gear, not only at maximum output.
-                  </p>
-                  <p className="text-sm text-[#e1d2be] leading-relaxed">
-                    This approach is what allows MAXOTO-equipped vehicles to
-                    retain the refinement and reliability that owners expect
-                    from modern premium platforms.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* PRODUCTS */}
-        <section id="products" className="py-24 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Featured Modules
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                Precision-Engineered
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  Performance Systems
-                </span>
-              </h2>
-              <p className="text-lg text-[#d1c0aa] leading-relaxed">
-                Two distinct modules, one philosophy—refinement without drama.
-              </p>
-            </div>
-
-            {/* Tabs */}
-            <div className="flex justify-center gap-3 mb-12" data-animate>
-              {products.map((product, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveProduct(idx)}
-                  className={`relative flex items-center gap-2.5 px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-300 overflow-hidden ${
-                    activeProduct === idx
-                      ? "bg-gradient-to-r from-[#e2b27a] to-[#b77b44] text-[#1c130e] shadow-lg shadow-[#b77b44]/35 scale-105"
-                      : "bg-white/5 text-[#d1c0aa] border border-white/10 hover:border-[#e2b27a]/40 hover:bg-white/10"
-                  }`}
-                >
-                  <product.icon className="w-4 h-4 relative z-10" />
-                  <span className="relative z-10">{product.name}</span>
-                </button>
-              ))}
-            </div>
-
-            {/* Active product */}
-            {products.map((product, idx) => (
-              <div
-                key={idx}
-                className={`transition-all duration-500 ${
-                  activeProduct === idx ? "block" : "hidden"
-                }`}
-                data-animate
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-                  {/* Visual */}
-                  <div className="relative">
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-10 rounded-2xl blur-3xl`}
-                    />
-                    <div className="relative p-10 bg-gradient-to-br from-black/75 via-[#18120f]/85 to-black/80 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-                      {/* Hex svg overlay */}
-                      <div
-                        className="absolute inset-0 opacity-[0.04]"
-                        style={{
-                          backgroundImage: `url("data:image/svg+xml,%3Csvg width='45' height='39' viewBox='0 0 45 39' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M22.5 1l17 9.5v19L22.5 39l-17-9.5v-19z' fill='none' stroke='%23b78a57' stroke-width='0.6'/%3E%3C/svg%3E")`,
-                          backgroundSize: "45px 39px",
-                        }}
-                      />
-                      <div className="relative aspect-square bg-gradient-to-br from-[#15100d] to-black rounded-xl flex items-center justify-center mb-6 overflow-hidden group">
-                        <div
-                          className={`absolute inset-0 bg-gradient-to-br ${product.accentColor} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                        />
-                        <product.icon className="w-32 h-32 text-[#e2b27a] relative z-10" />
-                      </div>
-                      <div className="grid grid-cols-3 gap-3">
-                        {product.stats.map((stat, statIdx) => (
-                          <div
-                            key={statIdx}
-                            className="relative text-center p-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:border-[#e2b27a]/40 transition-all overflow-hidden group"
-                          >
-                            <stat.icon
-                              className={`w-6 h-6 ${stat.color} mx-auto mb-1.5 relative z-10`}
-                            />
-                            <div className="text-xl font-bold text-white mb-0.5 relative z-10">
-                              {stat.value}
-                            </div>
-                            <div className="text-[10px] text-[#b1997a] uppercase tracking-[0.18em] font-medium relative z-10">
-                              {stat.label}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Details */}
-                  <div className="space-y-6">
-                    <div>
-                      <div
-                        className={`inline-flex items-center gap-2.5 px-4 py-2 bg-gradient-to-r ${product.accentColor} rounded-full mb-3`}
-                      >
-                        <product.icon className="w-4 h-4 text-[#1c130e]" />
-                        <span className="text-[#1c130e] font-bold text-xs uppercase tracking-[0.22em]">
-                          {product.name}
-                        </span>
-                      </div>
-                      <h3 className="text-3xl font-bold text-white mb-2">
-                        {product.tagline}
-                      </h3>
-                      <p className="text-lg text-[#f0d7ac] font-medium mb-4">
-                        {product.subtitle}
-                      </p>
-                      <p className="text-base text-[#e1d2be] leading-relaxed">
-                        {product.description}
-                      </p>
-                    </div>
-
-                    <div className="relative p-3.5 bg-gradient-to-r from-white/5 to-transparent border-l-4 border-[#e2b27a] rounded-lg overflow-hidden">
-                      <p className="text-xs text-[#b1997a] mb-0.5 relative z-10">
-                        Example Application
-                      </p>
-                      <p className="text-white font-semibold text-sm relative z-10">
-                        {product.example}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-2">
-                      {product.technicalHighlights.map((highlight, hIdx) => (
-                        <div
-                          key={hIdx}
-                          className="relative px-3.5 py-1.5 bg-white/5 border border-white/10 rounded-full text-sm text-[#e1d2be] font-medium overflow-hidden"
-                        >
-                          <span className="relative z-10">{highlight}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="space-y-2.5">
-                      {product.features.map((feature, fIdx) => (
-                        <div
-                          key={fIdx}
-                          className="relative flex items-start gap-2.5 p-3 bg-white/4 backdrop-blur-sm border border-white/6 rounded-lg hover:border-[#e2b27a]/40 transition-all"
-                        >
-                          <div className="shrink-0 w-5 h-5 rounded-full bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center mt-0.5">
-                            <Check className="w-3 h-3 text-[#1c130e]" />
-                          </div>
-                          <span className="text-[#e1d2be] leading-relaxed text-sm">
-                            {feature}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <CTAButton
-                      href={BRANDING.links[product.id]}
-                      size="default"
-                      variant="primary"
-                    >
-                      Discover {product.name}
-                    </CTAButton>
-                  </div>
-                </div>
-              </div>
+                {link}
+              </a>
             ))}
           </div>
-        </section>
 
-        {/* JOURNEY / PROCESS */}
-        <section id="process" className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-black via-[#130e0a] to-black" />
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Ownership Journey
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                From Curiosity to
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  Calibrated Confidence
-                </span>
-              </h2>
-              <p className="text-lg text-[#d1c0aa] leading-relaxed">
-                A short, guided path from first inquiry to your first drive.
-              </p>
-            </div>
-
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-              data-animate
-            >
-              {processSteps.map((step, idx) => (
-                <div
-                  key={idx}
-                  className="group relative p-6 bg-gradient-to-br from-black/80 to-[#15100d]/90 backdrop-blur-xl border border-white/12 rounded-2xl hover:border-[#e2b27a]/45 transition-all duration-500 overflow-hidden"
-                >
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${step.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                  />
-                  <div className="absolute top-3 right-3 w-3 h-3 border-t border-r border-[#e2b27a]/30" />
-                  <div className="absolute bottom-3 left-3 w-3 h-3 border-b border-l border-[#e2b27a]/30" />
-                  <div className="relative z-10">
-                    <div className="flex items-center justify-between mb-4">
-                      <div
-                        className={`w-11 h-11 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <step.icon className="w-6 h-6 text-[#21140f]" />
-                      </div>
-                      <span className="text-5xl font-bold text-white/5">
-                        {step.number}
-                      </span>
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-2.5 leading-tight">
-                      {step.title}
-                    </h3>
-                    <p className="text-[#d1c0aa] leading-relaxed text-sm">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
+          {/* Copyright */}
+          <div className="text-center text-xs text-white/40 tracking-wider">
+            © {new Date().getFullYear()} MAXOTO. All rights reserved.
+            Engineering Excellence.
           </div>
-        </section>
+        </div>
+      </footer>
 
-        {/* TECHNOLOGY STACK */}
-        <section id="tech" className="py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Inside the Hardware
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                A Modern
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  Electronics Platform
-                </span>
-              </h2>
-              <p className="text-lg text-[#d1c0aa] leading-relaxed">
-                Designed for the thermal, electrical, and mechanical realities
-                of real vehicles.
-              </p>
-            </div>
-
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
-              data-animate
-            >
-              {techStack.map((item, idx) => (
-                <div
-                  key={idx}
-                  className="relative p-6 bg-gradient-to-br from-black/80 to-[#18120f]/88 border border-white/10 rounded-2xl hover:border-[#e2b27a]/40 transition-all"
-                >
-                  <div className="flex items-start gap-3 mb-3">
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
-                      <item.icon className="w-5 h-5 text-[#e2b27a]" />
-                    </div>
-                    <div>
-                      <h3 className="text-sm font-semibold text-white mb-1">
-                        {item.title}
-                      </h3>
-                      <p className="text-xs text-[#d1c0aa] leading-relaxed">
-                        {item.text}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Network stats */}
-            <div
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 border border-white/10 rounded-2xl bg-gradient-to-r from-black/80 via-[#1b130f]/85 to-black/80 p-6"
-              data-animate
-            >
-              {networkStats.map((stat, idx) => (
-                <div key={idx} className="flex items-center gap-3">
-                  <div className="w-9 h-9 rounded-xl bg-white/5 flex items-center justify-center">
-                    <stat.icon className="w-5 h-5 text-[#e2b27a]" />
-                  </div>
-                  <div>
-                    <p className="text-base font-semibold text-white">
-                      {stat.value}
-                    </p>
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a]">
-                      {stat.label}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* OWNERSHIP HIGHLIGHTS */}
-        <section id="ownership" className="py-20 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="grid gap-10 lg:grid-cols-[1.2fr,1fr] items-center">
-              <div data-animate>
-                <h2 className="text-3xl md:text-4xl font-bold mb-4">
-                  The Subtle Details
-                  <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                    Enthusiasts Notice
-                  </span>
-                </h2>
-                <p className="text-[#d1c0aa] text-base leading-relaxed mb-5">
-                  MAXOTO modules are designed to feel native to your vehicle,
-                  with carefully chosen connectors, cable lengths, and mounting
-                  hardware that respect the original engineering. Installations
-                  are discreet, service-friendly, and free from unnecessary
-                  intrusion into existing looms.
-                </p>
-                <ul className="space-y-2.5 text-sm text-[#e1d2be]">
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    OEM-style harnesses with automotive-grade sleeving and
-                    seals.
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    Clear, illustrated guides that match your engine bay layout.
-                  </li>
-                  <li className="flex gap-2">
-                    <Check className="w-4 h-4 text-[#e2b27a] mt-[2px]" />
-                    Mounting strategies that avoid drilling or permanent
-                    modifications.
-                  </li>
-                </ul>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4" data-animate>
-                {ownershipHighlights.map((item, idx) => (
-                  <div
-                    key={idx}
-                    className="relative p-4 bg-gradient-to-br from-black/75 to-[#18120f]/85 border border-white/10 rounded-xl"
-                  >
-                    <item.icon className="w-5 h-5 text-[#e2b27a] mb-2" />
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-[#b1997a] mb-1">
-                      {item.label}
-                    </p>
-                    <p className="text-sm text-[#e1d2be] leading-relaxed">
-                      {item.value}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SERVICE BENEFITS */}
-        <section className="py-20 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5"
-              data-animate
-            >
-              {serviceBenefits.map((benefit, idx) => (
-                <div
-                  key={idx}
-                  className="relative p-5 bg-gradient-to-br from-black/80 to-[#191310]/85 backdrop-blur-xl border border-white/10 rounded-xl hover:border-[#e2b27a]/40 transition-all"
-                >
-                  <div className="flex items-start gap-3.5">
-                    <div className="shrink-0 w-10 h-10 bg-white/5 rounded-lg flex items-center justify-center">
-                      <benefit.icon className={`w-5 h-5 ${benefit.color}`} />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-white text-sm mb-1">
-                        {benefit.title}
-                      </h4>
-                      <p className="text-xs text-[#d1c0aa] leading-relaxed">
-                        {benefit.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* WHY MAXOTO */}
-        <section id="technology" className="py-24 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Why Choose MAXOTO
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                Redefining Automotive
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  Performance Standards
-                </span>
-              </h2>
-              <p className="text-lg text-[#d1c0aa] leading-relaxed">
-                A legacy of innovation, precision, and excellence.
-              </p>
-            </div>
-
-            <div
-              className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16"
-              data-animate
-            >
-              {whyMaxoto.map((feature, idx) => (
-                <div
-                  key={idx}
-                  className="group relative p-6 bg-gradient-to-br from-black/80 to-[#18120f]/88 backdrop-blur-xl border border-white/10 rounded-2xl hover:border-[#e2b27a]/40 transition-all duration-500 overflow-hidden"
-                >
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-br ${feature.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                  />
-                  <div className="absolute top-2.5 left-2.5 w-5 h-5 border-t-2 border-l-2 border-[#e2b27a]/15 group-hover:border-[#e2b27a]/30 transition-colors" />
-                  <div className="absolute bottom-2.5 right-2.5 w-5 h-5 border-b-2 border-r-2 border-[#e2b27a]/15 group-hover:border-[#e2b27a]/30 transition-colors" />
-                  <div className="relative z-10">
-                    <div className="relative inline-block mb-5">
-                      <div
-                        className={`w-14 h-14 bg-gradient-to-br ${feature.color} rounded-xl flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform duration-300`}
-                      >
-                        <feature.icon className="w-7 h-7 text-white" />
-                      </div>
-                    </div>
-                    <div className="inline-block px-2.5 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-[#f0d7ac] font-semibold mb-3">
-                      {feature.stat}
-                    </div>
-                    <h3 className="text-xl font-bold text-white mb-3 leading-tight">
-                      {feature.title}
-                    </h3>
-                    <p className="text-sm text-[#e1d2be] leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* TESTIMONIALS */}
-        <section id="testimonials" className="py-24 relative">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8">
-            <div className="text-center max-w-3xl mx-auto mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Customer Stories
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                Built for Drivers Who
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  Notice Everything
-                </span>
-              </h2>
-              <p className="text-lg text-[#d1c0aa] leading-relaxed">
-                {BRANDING.stats.customers} owners have already made the quiet
-                upgrade.
-              </p>
-            </div>
-
-            <div
-              ref={scrollContainerRef}
-              className="flex gap-6 overflow-x-auto pb-6 scrollbar-hide"
-              style={{ scrollBehavior: "smooth" }}
-              data-animate
-            >
-              {[...testimonials, ...testimonials].map((testimonial, idx) => (
-                <div
-                  key={idx}
-                  className="relative shrink-0 w-[380px] p-6 bg-gradient-to-br from-black/80 to-[#18120f]/85 backdrop-blur-xl border border-white/12 rounded-2xl hover:border-[#e2b27a]/45 transition-all shadow-2xl overflow-hidden"
-                >
-                  <div className="absolute top-2.5 left-2.5 w-3 h-3 border-t border-l border-[#e2b27a]/30" />
-                  <div className="absolute bottom-2.5 right-2.5 w-3 h-3 border-b border-r border-[#e2b27a]/30" />
-                  <div className="relative z-10">
-                    <div className="flex gap-1 mb-4">
-                      {[...Array(testimonial.rating)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className="w-4 h-4 text-[#e2b27a] fill-[#e2b27a]"
-                        />
-                      ))}
-                    </div>
-                    <p className="text-base text-[#e1d2be] leading-relaxed mb-6 italic">
-                      "{testimonial.text}"
-                    </p>
-                    <div className="flex items-center gap-3 pt-5 border-t border-white/10">
-                      <div className="relative">
-                        <img
-                          src={testimonial.avatar}
-                          alt={testimonial.name}
-                          className="w-12 h-12 rounded-full ring-2 ring-[#e2b27a]/55"
-                        />
-                        {testimonial.verified && (
-                          <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-full flex items-center justify-center ring-2 ring-black">
-                            <Check className="w-2.5 h-2.5 text-[#1c130e]" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex-1">
-                        <div className="font-bold text-white text-base mb-0.5">
-                          {testimonial.name}
-                        </div>
-                        <div className="text-xs text-[#f0d7ac] font-medium mb-0.5">
-                          {testimonial.vehicle}
-                        </div>
-                        <div className="text-xs text-[#b1997a]">
-                          {testimonial.location}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FAQ */}
-        <section className="py-24 relative">
-          <div className="max-w-4xl mx-auto px-6 lg:px-8">
-            <div className="text-center mb-16" data-animate>
-              <span className="inline-block px-3.5 py-1.5 bg-gradient-to-r from-[#e2b27a]/12 to-[#f0d7ac]/15 border border-[#e2b27a]/30 rounded-full text-[#f0d7ac] text-xs font-semibold uppercase tracking-[0.22em] mb-5">
-                Frequently Asked Questions
-              </span>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5">
-                Everything You Need
-                <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
-                  To Decide Clearly
-                </span>
-              </h2>
-            </div>
-
-            <div className="space-y-3" data-animate>
-              {faqs.map((faq, idx) => (
-                <div
-                  key={idx}
-                  className="relative bg-gradient-to-br from-black/80 to-[#18120f]/85 backdrop-blur-xl border border-white/12 rounded-xl overflow-hidden hover:border-[#e2b27a]/40 transition-all"
-                >
-                  <button
-                    onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                    className="relative w-full flex items-center justify-between p-5 text-left group z-10"
-                  >
-                    <span className="font-semibold text-white text-base pr-6 group-hover:text-[#f0d7ac] transition-colors">
-                      {faq.question}
-                    </span>
-                    <div
-                      className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center transition-all ${
-                        openFaq === idx
-                          ? "bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rotate-180"
-                          : "bg-white/5 group-hover:bg-white/10"
-                      }`}
-                    >
-                      <ChevronDown
-                        className={`w-4 h-4 ${
-                          openFaq === idx ? "text-[#21140f]" : "text-[#e2b27a]"
-                        }`}
-                      />
-                    </div>
-                  </button>
-                  {openFaq === idx && (
-                    <div className="relative px-5 pb-5 z-10">
-                      <div className="p-4 bg-white/4 border border-white/8 rounded-lg">
-                        <p className="text-[#e1d2be] leading-relaxed text-sm">
-                          {faq.answer}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FINAL CTA */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#2b1b11] to-black" />
-          <div
-            className="max-w-4xl mx-auto px-6 lg:px-8 text-center relative z-10"
-            data-animate
-          >
-            <div className="relative inline-block mb-6">
-              <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-2xl blur-xl opacity-40" />
-              <div className="relative inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-2xl shadow-2xl shadow-[#b77b44]/40">
-                <Rocket className="w-8 h-8 text-[#21140f]" />
-              </div>
-            </div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-5 leading-tight">
-              Configure Your Next
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] via-[#e2b27a] to-[#b77b44]">
-                Quiet Upgrade
-              </span>
-            </h2>
-            <p className="text-lg text-[#d1c0aa] mb-10 max-w-2xl mx-auto leading-relaxed">
-              Join a community of detail-obsessed drivers and discover what a
-              carefully calibrated module can do for everyday journeys and
-              long-distance escapes.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
-              <CTAButton
-                href={BRANDING.links.products}
-                size="large"
-                variant="primary"
-              >
-                Explore Our Collection
-              </CTAButton>
-              <CTAButton
-                href={BRANDING.links.contact}
-                size="large"
-                variant="ghost"
-              >
-                Speak with a Specialist
-              </CTAButton>
-            </div>
-            <div className="flex flex-wrap items-center justify-center gap-6 text-[#b1997a] text-sm font-medium">
-              {[
-                "Plug & Play Installation",
-                "Reversible at Any Time",
-                "Engineered in Germany",
-              ].map((item, idx) => (
-                <div key={idx} className="relative flex items-center gap-2">
-                  <div className="relative w-4 h-4 rounded-full bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
-                    <Check className="w-2.5 h-2.5 text-[#21140f]" />
-                  </div>
-                  <span>{item}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* FOOTER */}
-        <footer className="relative border-t border-white/12 bg-gradient-to-b from-black to-[#120d09] py-16">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12">
-              <div className="lg:col-span-2">
-                <div className="flex items-center gap-2.5 mb-3">
-                  <div className="relative w-9 h-9 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
-                    <Bolt className="w-5 h-5 text-[#21140f]" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-white">MAXOTO</h3>
-                    <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.18em]">
-                      Performance Engineering
-                    </p>
-                  </div>
-                </div>
-                <p className="text-[#d1c0aa] leading-relaxed max-w-md mb-5 text-sm">
-                  {BRANDING.tagline}. Delivering precision-engineered
-                  performance solutions developed in partnership with European
-                  electronics specialists.
-                </p>
-                <p className="text-xs text-[#a58b71]">
-                  Elevating the driving experience for discerning enthusiasts in{" "}
-                  {BRANDING.stats.countries} markets.
-                </p>
-              </div>
-
-              <div>
-                <h4 className="text-white font-bold uppercase tracking-[0.22em] text-xs mb-4">
-                  Products
-                </h4>
-                <div className="space-y-2.5">
-                  {[
-                    "PowerControl",
-                    "PedalBox",
-                    "All Products",
-                    "Compatibility",
-                  ].map((item, idx) => (
-                    <a
-                      key={idx}
-                      href="#"
-                      className="block text-[#d1c0aa] hover:text-[#f0d7ac] transition-colors text-sm"
-                    >
-                      {item}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <h4 className="text-white font-bold uppercase tracking-[0.22em] text-xs mb-4">
-                  Company
-                </h4>
-                <div className="space-y-2.5">
-                  {["Technology", "Testimonials", "Contact", "Support"].map(
-                    (item, idx) => (
-                      <a
-                        key={idx}
-                        href="#"
-                        className="block text-[#d1c0aa] hover:text-[#f0d7ac] transition-colors text-sm"
-                      >
-                        {item}
-                      </a>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="pt-6 border-t border-white/10">
-              <div className="flex flex-col md:flex-row justify-between items-center gap-5">
-                <p className="text-[#a58b71] text-xs">
-                  © 2025 MAXOTO. All rights reserved.
-                </p>
-                <div className="flex items-center gap-6">
-                  {["Privacy Policy", "Terms of Service", "Warranty"].map(
-                    (item, idx) => (
-                      <a
-                        key={idx}
-                        href="#"
-                        className="text-[#a58b71] hover:text-[#f0d7ac] transition-colors text-xs"
-                      >
-                        {item}
-                      </a>
-                    )
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </footer>
-      </div>
-
-      {/* Global styles */}
+      {/* Animations CSS */}
       <style jsx>{`
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        @keyframes fadeInUp {
+        @keyframes fade-in {
           from {
             opacity: 0;
             transform: translateY(30px);
@@ -1636,15 +997,44 @@ const MaxotoLuxuryPage = () => {
             transform: translateY(0);
           }
         }
-        .animate-in {
-          animation: fadeInUp 0.7s ease-out forwards;
+
+        @keyframes dash {
+          from {
+            stroke-dashoffset: -50;
+          }
+          to {
+            stroke-dashoffset: 0;
+          }
         }
+
+        .animate-fade-in {
+          animation: fade-in 1s ease-out forwards;
+          opacity: 0;
+        }
+
+        .animate-dash {
+          animation: dash 8s linear infinite;
+        }
+
+        .animate-in {
+          animation: fade-in 0.8s ease-out forwards;
+        }
+
         [data-animate] {
           opacity: 0;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
     </div>
   );
 };
 
-export default MaxotoLuxuryPage;
+export default Home;
