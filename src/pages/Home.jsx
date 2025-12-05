@@ -15,8 +15,8 @@ import {
   Settings,
   Cpu,
   Activity,
-  TrendingUp,
-  Award,
+  Menu,
+  X,
   Timer,
   Layers,
   Box,
@@ -40,6 +40,7 @@ import {
   BarChart3,
   Volume2,
   VolumeX,
+  Search,
 } from "lucide-react";
 
 // ============================================
@@ -76,11 +77,39 @@ const Home = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [isPlaying, setIsPlaying] = useState(true);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const scrollContainerRef = useRef(null);
   const videoRef = useRef(null);
 
   // Video paths
   const videos = ["/1.mp4", "/2.mp4", "/3.mp4", "/4.mp4"];
+
+  // Navigation menu items - Clean & Simple
+  const menuItems = [
+    {
+      label: "PowerControl",
+      href: "/products/powercontrol",
+      description: "Performance Enhancement",
+    },
+    {
+      label: "PedalBox",
+      href: "/products/pedalbox",
+      description: "Throttle Response",
+    },
+    {
+      label: "Technology",
+      href: "#tech",
+      description: "Engineering Innovation",
+    },
+    { label: "Ownership", href: "#process", description: "Your Journey" },
+    {
+      label: "Reviews",
+      href: "#testimonials",
+      description: "Customer Stories",
+    },
+    { label: "About", href: "/about", description: "Our Story" },
+    { label: "Contact", href: "/contact", description: "Get In Touch" },
+  ];
 
   // Hero slides - RR style carousel
   const heroSlides = [
@@ -333,10 +362,23 @@ const Home = () => {
     return () => clearInterval(intervalId);
   }, []);
 
+  // Prevent body scroll when menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
   return (
     <div className="min-h-screen bg-black text-white overflow-hidden">
       {/* ============================================ */}
-      {/* HEADER - Rolls-Royce inspired */}
+      {/* HEADER - Rolls-Royce Style */}
       {/* ============================================ */}
       <header
         className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
@@ -346,59 +388,59 @@ const Home = () => {
         }}
       >
         <div className="border-b border-white/10">
-          <div className="max-w-[1920px] mx-auto px-6 lg:px-12">
-            <div className="flex items-center justify-between h-20">
-              {/* Left - Menu */}
+          <div className="max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-12">
+            <div className="flex items-center justify-between h-16 md:h-20">
+              {/* Left - Menu Button */}
               <div className="flex-1 flex justify-start">
-                <button className="group flex flex-col items-center gap-1 hover:opacity-80 transition-opacity">
-                  <div className="flex gap-0.5">
-                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
-                    <div className="w-3 h-0.5 bg-white/40"></div>
-                    <div className="w-7 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                <button
+                  onClick={() => setMobileMenuOpen(true)}
+                  className="group flex items-center gap-2 hover:opacity-80 transition-opacity"
+                  aria-label="Open menu"
+                >
+                  {/* Animated hamburger icon */}
+                  <div className="flex flex-col gap-1">
+                    <div className="w-5 h-0.5 bg-white transition-all group-hover:w-8"></div>
+                    <div className="w-3 h-0.5 bg-white/60 transition-all group-hover:w-8"></div>
+                    <div className="w-5 h-0.5 bg-white transition-all group-hover:w-8"></div>
                   </div>
-                  <span className="text-[9px] tracking-[0.3em] text-white/60 uppercase">
+                  <span className="hidden md:block text-[9px] tracking-[0.3em] text-white/60 uppercase">
                     Menu
                   </span>
                 </button>
               </div>
 
-              {/* Center - MAXOTO Monogram */}
+              {/* Center - MAXOTO Logo */}
               <div className="absolute left-1/2 -translate-x-1/2">
                 <a
                   href="/"
-                  className="flex items-center gap-2.5 transition-transform hover:scale-105"
+                  className="flex items-center gap-2 md:gap-2.5 transition-transform hover:scale-105"
                 >
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg blur-sm opacity-60" />
-                    <div className="relative w-10 h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
-                      <Bolt className="w-6 h-6 text-[#1c130e]" />
+                    <div className="relative w-8 h-8 md:w-10 md:h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+                      <Bolt className="w-4 h-4 md:w-6 md:h-6 text-[#1c130e]" />
                     </div>
                   </div>
                   <div>
-                    <h1 className="text-lg font-bold tracking-tight text-white">
+                    <h1 className="text-base md:text-lg font-bold tracking-tight text-white">
                       MAXOTO
                     </h1>
-                    <p className="text-[8px] text-[#c3ac93] uppercase tracking-[0.25em]">
-                      Performance Engineering
+                    <p className="text-[7px] md:text-[8px] text-[#c3ac93] uppercase tracking-[0.25em]">
+                      Performance
                     </p>
                   </div>
                 </a>
               </div>
 
-              {/* Right - Dealers */}
+              {/* Right - Find Dealer */}
               <div className="flex-1 flex justify-end">
-                <button className="group flex items-center gap-2 text-sm tracking-wider hover:opacity-80 transition-opacity">
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle cx="11" cy="11" r="8" strokeWidth="2" />
-                    <path d="M21 21l-4.35-4.35" strokeWidth="2" />
-                  </svg>
-                  <span className="text-xs tracking-[0.2em] uppercase text-white/80">
+                <button className="group flex items-center gap-1.5 md:gap-2 text-sm tracking-wider hover:opacity-80 transition-opacity">
+                  <Search className="w-3.5 h-3.5 md:w-4 md:h-4" />
+                  <span className="hidden sm:inline text-[10px] md:text-xs tracking-[0.2em] uppercase text-white/80">
                     Find Dealer
+                  </span>
+                  <span className="sm:hidden text-[10px] tracking-[0.2em] uppercase text-white/80">
+                    Dealer
                   </span>
                 </button>
               </div>
@@ -408,7 +450,112 @@ const Home = () => {
       </header>
 
       {/* ============================================ */}
-      {/* HERO CAROUSEL - Full screen RR style */}
+      {/* LEFT SLIDING MENU - Cleaner, Simpler Design */}
+      {/* ============================================ */}
+      <div
+        className={`fixed inset-0 z-[100] transition-opacity duration-500 ${
+          mobileMenuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        {/* Dark overlay */}
+        <div
+          className="absolute inset-0 bg-black/85 backdrop-blur-sm"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+
+        {/* Left sliding panel - Cleaner design */}
+        <div
+          className={`absolute left-0 top-0 bottom-0 w-full sm:w-[420px] bg-[#0f0f0f] border-r border-white/5 transition-transform duration-500 ease-out ${
+            mobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="h-full overflow-y-auto flex flex-col">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/5">
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center gap-2 text-white/60 hover:text-white transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+                <span className="text-xs tracking-wider uppercase">Close</span>
+              </button>
+
+              {/* Logo badge */}
+              <div className="w-10 h-10 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rounded-lg flex items-center justify-center">
+                <Bolt className="w-5 h-5 text-[#1c130e]" />
+              </div>
+            </div>
+
+            {/* Menu items - Simple and clean */}
+            <nav className="flex-1 py-8 px-6">
+              <div className="space-y-1">
+                {menuItems.map((item, idx) => (
+                  <a
+                    key={idx}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="group block py-4 px-4 rounded-lg hover:bg-white/5 transition-all duration-300"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <div className="text-lg font-medium text-white group-hover:text-[#e2b27a] transition-colors">
+                          {item.label}
+                        </div>
+                        <div className="text-xs text-white/40 mt-0.5 tracking-wide">
+                          {item.description}
+                        </div>
+                      </div>
+                      <ChevronRight className="w-5 h-5 text-white/20 group-hover:text-[#e2b27a] group-hover:translate-x-1 transition-all" />
+                    </div>
+                  </a>
+                ))}
+              </div>
+            </nav>
+
+            {/* Footer - CTA & Contact */}
+            <div className="p-6 border-t border-white/5 space-y-4">
+              {/* CTA Button */}
+              <a
+                href={BRANDING.links.contact}
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-center gap-2 w-full px-6 py-3 bg-gradient-to-r from-[#e2b27a] to-[#b77b44] text-black text-sm font-semibold tracking-wide hover:from-[#f0d7ac] hover:to-[#b77b44] transition-all group rounded-lg"
+              >
+                <span>Get Started</span>
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              </a>
+
+              {/* Contact info */}
+              <div className="space-y-2 text-xs text-white/40">
+                <div className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span>+91 1800 123 4567</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>info@maxoto.com</span>
+                </div>
+              </div>
+
+              {/* Social links - horizontal */}
+              <div className="flex gap-4 pt-3">
+                {["Instagram", "Facebook", "Twitter"].map((social, idx) => (
+                  <a
+                    key={idx}
+                    href={`#${social.toLowerCase()}`}
+                    className="text-[10px] tracking-wider uppercase text-white/30 hover:text-white transition-colors"
+                  >
+                    {social}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================ */}
+      {/* HERO CAROUSEL - Fully Responsive */}
       {/* ============================================ */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Slides */}
@@ -431,47 +578,47 @@ const Home = () => {
             />
 
             {/* Gradient overlays */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-transparent to-black/70" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-transparent to-black/50" />
 
-            {/* Content */}
-            <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-6">
-              <div className="max-w-4xl mx-auto space-y-6">
+            {/* Content - Responsive */}
+            <div className="relative z-20 h-full flex flex-col items-center justify-center text-center px-4 sm:px-6">
+              <div className="max-w-4xl mx-auto space-y-4 sm:space-y-6">
                 {/* Small label */}
                 <p
-                  className="text-xs md:text-sm tracking-[0.35em] uppercase text-white/80 animate-fade-in"
+                  className="text-[10px] sm:text-xs md:text-sm tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/80 animate-fade-in"
                   style={{ animationDelay: "0.2s" }}
                 >
                   {slide.description}
                 </p>
 
-                {/* Main title */}
+                {/* Main title - Responsive sizes */}
                 <h1
-                  className="text-6xl md:text-7xl lg:text-8xl font-light tracking-[0.15em] text-white animate-fade-in"
+                  className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-light tracking-[0.1em] sm:tracking-[0.15em] text-white animate-fade-in leading-tight"
                   style={{ animationDelay: "0.4s" }}
                 >
                   {slide.title}
                 </h1>
 
-                {/* Subtitle */}
+                {/* Subtitle - Responsive sizes */}
                 <p
-                  className="text-xl md:text-2xl lg:text-3xl tracking-[0.25em] uppercase text-white/90 animate-fade-in"
+                  className="text-lg sm:text-xl md:text-2xl lg:text-3xl tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/90 animate-fade-in"
                   style={{ animationDelay: "0.6s" }}
                 >
                   {slide.subtitle}
                 </p>
 
-                {/* CTA */}
+                {/* CTA - Responsive button */}
                 <div
-                  className="pt-8 animate-fade-in"
+                  className="pt-6 sm:pt-8 animate-fade-in"
                   style={{ animationDelay: "0.8s" }}
                 >
                   <a
                     href={slide.link}
-                    className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+                    className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white text-black text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
                   >
                     <span>{slide.cta}</span>
-                    <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+                    <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
                   </a>
                 </div>
               </div>
@@ -479,35 +626,35 @@ const Home = () => {
           </div>
         ))}
 
-        {/* Video Controls */}
-        <div className="absolute bottom-8 right-8 z-30 flex items-center gap-3">
+        {/* Video Controls - Responsive positioning */}
+        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 right-4 sm:right-6 md:right-8 z-30 flex items-center gap-2 sm:gap-3">
           <button
             onClick={toggleMute}
-            className="w-11 h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
+            className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
             aria-label={isMuted ? "Unmute" : "Mute"}
           >
             {isMuted ? (
-              <VolumeX className="w-5 h-5 text-white" />
+              <VolumeX className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             ) : (
-              <Volume2 className="w-5 h-5 text-white" />
+              <Volume2 className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             )}
           </button>
 
           <button
             onClick={togglePlayPause}
-            className="w-11 h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
+            className="w-9 h-9 sm:w-10 sm:h-10 md:w-11 md:h-11 flex items-center justify-center bg-black/40 hover:bg-black/60 backdrop-blur-sm border border-white/20 rounded-full transition-all"
             aria-label={isPlaying ? "Pause" : "Play"}
           >
             {isPlaying ? (
-              <Pause className="w-5 h-5 text-white" />
+              <Pause className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
             ) : (
-              <Play className="w-5 h-5 text-white ml-0.5" />
+              <Play className="w-4 h-4 sm:w-5 sm:h-5 text-white ml-0.5" />
             )}
           </button>
         </div>
 
-        {/* Pagination - RR style animated circles */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-3">
+        {/* Pagination - Responsive */}
+        <div className="absolute bottom-4 sm:bottom-6 md:bottom-8 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 sm:gap-3">
           {heroSlides.map((slide, index) => (
             <button
               key={slide.id}
@@ -516,7 +663,7 @@ const Home = () => {
               aria-label={`Go to slide ${index + 1}`}
             >
               <svg
-                className="w-5 h-5"
+                className="w-4 h-4 sm:w-5 sm:h-5"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
               >
@@ -549,37 +696,37 @@ const Home = () => {
           ))}
         </div>
 
-        {/* Scroll indicator */}
-        <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 animate-bounce">
-          <ChevronDown className="w-7 h-7 text-white/60" />
+        {/* Scroll indicator - Hidden on small screens */}
+        <div className="hidden sm:block absolute bottom-16 md:bottom-20 left-1/2 -translate-x-1/2 z-20 animate-bounce">
+          <ChevronDown className="w-6 h-6 md:w-7 md:h-7 text-white/60" />
         </div>
       </section>
 
       {/* ============================================ */}
       {/* BRAND STORY */}
       {/* ============================================ */}
-      <section className="relative py-24 bg-black overflow-hidden">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="grid gap-12 lg:grid-cols-2 items-center">
+      <section className="relative py-16 sm:py-20 md:py-24 bg-black overflow-hidden">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="grid gap-8 sm:gap-10 lg:gap-12 lg:grid-cols-2 items-center">
             {/* Left content */}
             <div data-animate>
-              <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+              <p className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/60 mb-4 sm:mb-6">
                 ENGINEERING EXCELLENCE
               </p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
                 A Quietly Obsessive
                 <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
                   Engineering Culture
                 </span>
               </h2>
-              <p className="text-lg text-white/70 leading-relaxed mb-6">
+              <p className="text-base sm:text-lg text-white/70 leading-relaxed mb-4 sm:mb-6">
                 MAXOTO was founded by calibration engineers and test drivers who
                 spent their early careers inside OEM development programs. The
                 goal was simple: offer measurable performance benefits without
                 the drama and compromises that often define the aftermarket.
               </p>
-              <p className="text-base text-white/60 leading-relaxed">
+              <p className="text-sm sm:text-base text-white/60 leading-relaxed">
                 Every module is the product of hundreds of hours of data
                 logging, dyno work, and route validation on real roads—from
                 high-altitude passes to dense city traffic.
@@ -588,13 +735,13 @@ const Home = () => {
 
             {/* Right - image placeholder */}
             <div
-              className="relative aspect-[4/3] overflow-hidden rounded-2xl"
+              className="relative aspect-[4/3] overflow-hidden rounded-xl sm:rounded-2xl"
               data-animate
             >
               <div className="absolute inset-0 bg-gradient-to-br from-[#2b1b11] to-black flex items-center justify-center border border-white/10">
                 <div className="text-center">
-                  <CircuitBoard className="w-20 h-20 text-[#e2b27a] mx-auto mb-4 opacity-40" />
-                  <p className="text-sm text-white/40 tracking-[0.25em] uppercase">
+                  <CircuitBoard className="w-16 h-16 sm:w-20 sm:h-20 text-[#e2b27a] mx-auto mb-3 sm:mb-4 opacity-40" />
+                  <p className="text-xs sm:text-sm text-white/40 tracking-[0.2em] sm:tracking-[0.25em] uppercase px-4">
                     Engineering Lab Image
                   </p>
                 </div>
@@ -607,28 +754,31 @@ const Home = () => {
       {/* ============================================ */}
       {/* DISCOVER PRODUCTS - RR style cards */}
       {/* ============================================ */}
-      <section id="products" className="relative py-24 bg-[#0a0a0a]">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+      <section
+        id="products"
+        className="relative py-16 sm:py-20 md:py-24 bg-[#0a0a0a]"
+      >
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <p className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/60 mb-4 sm:mb-6">
               FEATURED MODULES
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
               Discover Your Performance
             </h2>
-            <p className="text-lg text-white/70 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed px-4">
               Choose from our precision-engineered modules or configure a
               bespoke solution for your vehicle.
             </p>
           </div>
 
           {/* Product Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-12">
             {products.map((product, index) => (
               <a
                 key={index}
                 href={BRANDING.links[product.id]}
-                className="group relative aspect-[3/4] overflow-hidden bg-black rounded-2xl"
+                className="group relative aspect-[3/4] overflow-hidden bg-black rounded-xl sm:rounded-2xl"
                 data-animate
               >
                 {/* Background gradient */}
@@ -647,46 +797,46 @@ const Home = () => {
 
                 {/* Icon in center */}
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <product.icon className="w-32 h-32 text-[#e2b27a] opacity-10 group-hover:opacity-20 transition-all duration-700 group-hover:scale-110" />
+                  <product.icon className="w-24 h-24 sm:w-32 sm:h-32 text-[#e2b27a] opacity-10 group-hover:opacity-20 transition-all duration-700 group-hover:scale-110" />
                 </div>
 
                 {/* Content */}
-                <div className="absolute inset-x-0 bottom-0 p-10 text-white">
-                  <div className="flex items-center gap-3 mb-4">
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8 md:p-10 text-white">
+                  <div className="flex items-center gap-2.5 sm:gap-3 mb-3 sm:mb-4">
                     <div
-                      className={`w-12 h-12 bg-gradient-to-br ${product.accentColor} rounded-xl flex items-center justify-center`}
+                      className={`w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br ${product.accentColor} rounded-lg sm:rounded-xl flex items-center justify-center`}
                     >
-                      <product.icon className="w-7 h-7 text-[#1c130e]" />
+                      <product.icon className="w-5 h-5 sm:w-7 sm:h-7 text-[#1c130e]" />
                     </div>
                   </div>
 
-                  <p className="text-xs tracking-[0.25em] uppercase text-white/70 mb-2">
+                  <p className="text-[10px] sm:text-xs tracking-[0.2em] sm:tracking-[0.25em] uppercase text-white/70 mb-2">
                     {product.tagline}
                   </p>
-                  <h3 className="text-3xl md:text-4xl font-light tracking-wide mb-3">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-light tracking-wide mb-2 sm:mb-3">
                     {product.name}
                   </h3>
-                  <p className="text-sm text-white/60 leading-relaxed mb-6">
+                  <p className="text-xs sm:text-sm text-white/60 leading-relaxed mb-4 sm:mb-6">
                     {product.subtitle}
                   </p>
 
                   {/* Stats */}
-                  <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-4 sm:mb-6">
                     {product.stats.map((stat, idx) => (
                       <div key={idx} className="text-center">
-                        <div className="text-2xl font-bold text-white mb-1">
+                        <div className="text-xl sm:text-2xl font-bold text-white mb-0.5 sm:mb-1">
                           {stat.value}
                         </div>
-                        <div className="text-[10px] uppercase tracking-[0.15em] text-white/50">
+                        <div className="text-[9px] sm:text-[10px] uppercase tracking-[0.12em] sm:tracking-[0.15em] text-white/50">
                           {stat.label}
                         </div>
                       </div>
                     ))}
                   </div>
 
-                  <div className="inline-flex items-center gap-2 text-sm tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">
+                  <div className="inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm tracking-[0.15em] sm:tracking-[0.2em] uppercase opacity-0 group-hover:opacity-100 transition-opacity">
                     <span>Explore</span>
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                   </div>
                 </div>
               </a>
@@ -697,10 +847,10 @@ const Home = () => {
           <div className="text-center" data-animate>
             <a
               href={BRANDING.links.products}
-              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+              className="inline-flex items-center gap-2 sm:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white text-black text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
             >
               <span>View All Products</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
         </div>
@@ -709,41 +859,44 @@ const Home = () => {
       {/* ============================================ */}
       {/* PROCESS / JOURNEY */}
       {/* ============================================ */}
-      <section id="process" className="relative py-24 bg-black">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+      <section
+        id="process"
+        className="relative py-16 sm:py-20 md:py-24 bg-black"
+      >
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+            <p className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/60 mb-4 sm:mb-6">
               OWNERSHIP JOURNEY
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
               From Curiosity to Confidence
             </h2>
-            <p className="text-lg text-white/70 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed px-4">
               A guided path from first inquiry to your first calibrated drive.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
             {processSteps.map((step, idx) => (
               <div
                 key={idx}
-                className="group relative p-8 bg-[#0f0f0f] border border-white/10 hover:border-[#e2b27a]/40 transition-all duration-500"
+                className="group relative p-6 sm:p-8 bg-[#0f0f0f] border border-white/10 hover:border-[#e2b27a]/40 transition-all duration-500"
                 data-animate
               >
                 {/* Number watermark */}
-                <div className="absolute top-4 right-4 text-6xl font-bold text-white/5">
+                <div className="absolute top-3 right-3 sm:top-4 sm:right-4 text-5xl sm:text-6xl font-bold text-white/5">
                   {step.number}
                 </div>
 
                 {/* Icon */}
-                <div className="relative w-14 h-14 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                  <step.icon className="w-8 h-8 text-[#1c130e]" />
+                <div className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center mb-4 sm:mb-6 group-hover:scale-110 transition-transform">
+                  <step.icon className="w-6 h-6 sm:w-8 sm:h-8 text-[#1c130e]" />
                 </div>
 
-                <h3 className="text-xl font-semibold text-white mb-3">
+                <h3 className="text-lg sm:text-xl font-semibold text-white mb-2 sm:mb-3">
                   {step.title}
                 </h3>
-                <p className="text-sm text-white/60 leading-relaxed">
+                <p className="text-xs sm:text-sm text-white/60 leading-relaxed">
                   {step.description}
                 </p>
               </div>
@@ -757,17 +910,17 @@ const Home = () => {
       {/* ============================================ */}
       <section
         id="testimonials"
-        className="relative py-24 bg-[#0a0a0a] overflow-hidden"
+        className="relative py-16 sm:py-20 md:py-24 bg-[#0a0a0a] overflow-hidden"
       >
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-16">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12 mb-12 sm:mb-16">
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+            <p className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/60 mb-4 sm:mb-6">
               CUSTOMER STORIES
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
               Built for Drivers Who Notice Everything
             </h2>
-            <p className="text-lg text-white/70 leading-relaxed">
+            <p className="text-base sm:text-lg text-white/70 leading-relaxed px-4">
               {BRANDING.stats.customers} owners have made the quiet upgrade.
             </p>
           </div>
@@ -775,38 +928,38 @@ const Home = () => {
 
         <div
           ref={scrollContainerRef}
-          className="flex gap-6 overflow-x-auto pb-6 px-6 scrollbar-hide"
+          className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 sm:pb-6 px-4 sm:px-6 scrollbar-hide"
           style={{ scrollBehavior: "smooth" }}
         >
           {[...testimonials, ...testimonials].map((testimonial, idx) => (
             <div
               key={idx}
-              className="shrink-0 w-[400px] p-8 bg-black border border-white/10 hover:border-[#e2b27a]/40 transition-all"
+              className="shrink-0 w-[280px] sm:w-[350px] md:w-[400px] p-6 sm:p-8 bg-black border border-white/10 hover:border-[#e2b27a]/40 transition-all"
             >
               {/* Stars */}
-              <div className="flex gap-1 mb-4">
+              <div className="flex gap-1 mb-3 sm:mb-4">
                 {[...Array(testimonial.rating)].map((_, i) => (
                   <Star
                     key={i}
-                    className="w-4 h-4 text-[#e2b27a] fill-[#e2b27a]"
+                    className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#e2b27a] fill-[#e2b27a]"
                   />
                 ))}
               </div>
 
               {/* Quote */}
-              <p className="text-base text-white/80 leading-relaxed mb-6 italic">
+              <p className="text-sm sm:text-base text-white/80 leading-relaxed mb-4 sm:mb-6 italic">
                 "{testimonial.text}"
               </p>
 
               {/* Author */}
-              <div className="flex items-center gap-3 pt-6 border-t border-white/10">
+              <div className="flex items-center gap-2.5 sm:gap-3 pt-4 sm:pt-6 border-t border-white/10">
                 <img
                   src={testimonial.avatar}
                   alt={testimonial.name}
-                  className="w-12 h-12 rounded-full ring-2 ring-[#e2b27a]/50"
+                  className="w-10 h-10 sm:w-12 sm:h-12 rounded-full ring-2 ring-[#e2b27a]/50"
                 />
                 <div>
-                  <div className="font-semibold text-white text-base">
+                  <div className="font-semibold text-white text-sm sm:text-base">
                     {testimonial.name}
                   </div>
                   <div className="text-xs text-[#e2b27a]">
@@ -825,18 +978,18 @@ const Home = () => {
       {/* ============================================ */}
       {/* FAQ */}
       {/* ============================================ */}
-      <section className="relative py-24 bg-black">
-        <div className="max-w-4xl mx-auto px-6 lg:px-12">
-          <div className="text-center mb-16">
-            <p className="text-xs tracking-[0.35em] uppercase text-white/60 mb-6">
+      <section className="relative py-16 sm:py-20 md:py-24 bg-black">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12">
+          <div className="text-center mb-12 sm:mb-16">
+            <p className="text-[10px] sm:text-xs tracking-[0.3em] sm:tracking-[0.35em] uppercase text-white/60 mb-4 sm:mb-6">
               FREQUENTLY ASKED QUESTIONS
             </p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
               Everything You Need to Decide Clearly
             </h2>
           </div>
 
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqs.map((faq, idx) => (
               <div
                 key={idx}
@@ -845,28 +998,28 @@ const Home = () => {
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                  className="w-full flex items-center justify-between p-6 text-left"
+                  className="w-full flex items-center justify-between p-4 sm:p-6 text-left"
                 >
-                  <span className="font-semibold text-white text-lg pr-6">
+                  <span className="font-semibold text-white text-base sm:text-lg pr-4 sm:pr-6">
                     {faq.question}
                   </span>
                   <div
-                    className={`shrink-0 w-10 h-10 flex items-center justify-center transition-all ${
+                    className={`shrink-0 w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center transition-all ${
                       openFaq === idx
                         ? "bg-gradient-to-br from-[#e2b27a] to-[#b77b44] rotate-180"
                         : "bg-white/5"
                     }`}
                   >
                     <ChevronDown
-                      className={`w-5 h-5 ${
+                      className={`w-4 h-4 sm:w-5 sm:h-5 ${
                         openFaq === idx ? "text-[#1c130e]" : "text-[#e2b27a]"
                       }`}
                     />
                   </div>
                 </button>
                 {openFaq === idx && (
-                  <div className="px-6 pb-6">
-                    <p className="text-white/70 leading-relaxed">
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-6">
+                    <p className="text-sm sm:text-base text-white/70 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -880,16 +1033,16 @@ const Home = () => {
       {/* ============================================ */}
       {/* FINAL CTA */}
       {/* ============================================ */}
-      <section className="relative py-32 bg-gradient-to-br from-black via-[#1a1108] to-black overflow-hidden">
-        <div className="max-w-4xl mx-auto px-6 lg:px-12 text-center relative z-10">
-          <div className="relative inline-block mb-8">
+      <section className="relative py-20 sm:py-24 md:py-32 bg-gradient-to-br from-black via-[#1a1108] to-black overflow-hidden">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-12 text-center relative z-10">
+          <div className="relative inline-block mb-6 sm:mb-8">
             <div className="absolute inset-0 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] blur-2xl opacity-40" />
-            <div className="relative w-20 h-20 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center shadow-2xl">
-              <Rocket className="w-10 h-10 text-[#1c130e]" />
+            <div className="relative w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center shadow-2xl">
+              <Rocket className="w-8 h-8 sm:w-10 sm:h-10 text-[#1c130e]" />
             </div>
           </div>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light tracking-wide text-white mb-4 sm:mb-6 leading-tight">
             Configure Your Next
             <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#f5e3c8] to-[#e2b27a]">
@@ -897,37 +1050,37 @@ const Home = () => {
             </span>
           </h2>
 
-          <p className="text-lg text-white/70 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg text-white/70 mb-8 sm:mb-12 max-w-2xl mx-auto leading-relaxed px-4">
             Join a community of detail-obsessed drivers and discover what a
             carefully calibrated module can do for everyday journeys.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 mb-8 sm:mb-12 px-4">
             <a
               href={BRANDING.links.products}
-              className="inline-flex items-center gap-3 px-10 py-4 bg-white text-black text-sm tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-white text-black text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase font-semibold hover:bg-white/90 transition-all group"
             >
               <span>Explore Collection</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </a>
             <a
               href={BRANDING.links.contact}
-              className="inline-flex items-center gap-3 px-10 py-4 bg-transparent border-2 border-white/20 text-white text-sm tracking-[0.25em] uppercase font-semibold hover:border-white/40 transition-all group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 sm:gap-3 px-6 sm:px-8 md:px-10 py-3 sm:py-4 bg-transparent border-2 border-white/20 text-white text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase font-semibold hover:border-white/40 transition-all group"
             >
               <span>Contact Specialist</span>
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" />
             </a>
           </div>
 
-          {/* Trust badges */}
-          <div className="flex flex-wrap items-center justify-center gap-8 text-white/60 text-sm">
+          {/* Trust badges - Responsive */}
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-4 sm:gap-6 md:gap-8 text-white/60 text-xs sm:text-sm px-4">
             {[
               "Plug & Play Installation",
               "Reversible at Any Time",
               "Engineered in Germany",
             ].map((item, idx) => (
               <div key={idx} className="flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-[#e2b27a]" />
+                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-[#e2b27a] shrink-0" />
                 <span>{item}</span>
               </div>
             ))}
@@ -938,25 +1091,27 @@ const Home = () => {
       {/* ============================================ */}
       {/* FOOTER */}
       {/* ============================================ */}
-      <footer className="relative bg-black border-t border-white/10 py-16">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
+      <footer className="relative bg-black border-t border-white/10 py-12 sm:py-16">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-12">
           {/* Logo */}
-          <div className="flex justify-center mb-12">
-            <div className="flex items-center gap-2.5">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
-                <Bolt className="w-7 h-7 text-[#1c130e]" />
+          <div className="flex justify-center mb-8 sm:mb-12">
+            <div className="flex items-center gap-2 sm:gap-2.5">
+              <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-[#e2b27a] to-[#b77b44] flex items-center justify-center">
+                <Bolt className="w-5 h-5 sm:w-7 sm:h-7 text-[#1c130e]" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-white">MAXOTO</h3>
-                <p className="text-[9px] text-[#c3ac93] uppercase tracking-[0.25em]">
+                <h3 className="text-lg sm:text-xl font-bold text-white">
+                  MAXOTO
+                </h3>
+                <p className="text-[8px] sm:text-[9px] text-[#c3ac93] uppercase tracking-[0.25em]">
                   Performance Engineering
                 </p>
               </div>
             </div>
           </div>
 
-          {/* Links */}
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 mb-12 text-sm">
+          {/* Links - Responsive grid */}
+          <div className="flex flex-wrap justify-center gap-x-4 sm:gap-x-6 md:gap-x-8 gap-y-3 sm:gap-y-4 mb-8 sm:mb-12 text-xs sm:text-sm">
             {[
               "PowerControl",
               "PedalBox",
@@ -978,7 +1133,7 @@ const Home = () => {
           </div>
 
           {/* Copyright */}
-          <div className="text-center text-xs text-white/40 tracking-wider">
+          <div className="text-center text-[10px] sm:text-xs text-white/40 tracking-wider">
             © {new Date().getFullYear()} MAXOTO. All rights reserved.
             Engineering Excellence.
           </div>
